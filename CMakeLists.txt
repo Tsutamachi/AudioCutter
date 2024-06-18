@@ -15,6 +15,7 @@ qt_add_qml_module(appcutter
     URI cutter
     VERSION 1.0
     QML_FILES Window.qml
+    QML_FILES Content.qml
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

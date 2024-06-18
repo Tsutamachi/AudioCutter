@@ -23,11 +23,14 @@ ApplicationWindow {
         //画面显示
         Rectangle{
             id: rect1
-            color: "black"
+            // color: "black"
             width: 1000
             height: 600
             visible: true
             border.width: 3
+            Content{
+                id:content
+            }
 
         }
 
