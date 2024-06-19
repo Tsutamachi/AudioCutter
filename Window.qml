@@ -72,19 +72,7 @@ ApplicationWindow {
         height: 110
         anchors.top: rect3.bottom
         anchors.horizontalCenter: main.horizontalCenter
-        MyRadioButton{
-            id:rbtn1
-            text: "打开文件"
-            radius: 50
-            // Layout.rightMargin: 5
-            anchors.rightMargin: rbtn2.left
-        }
-        MyRadioButton{
-            id:rbtn2
-            radius: 50
-            text: "打开文件"
-            anchors.leftMargin: 5
-        }
+
     }
 
     //状态栏
