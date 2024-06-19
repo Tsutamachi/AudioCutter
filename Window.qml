@@ -15,18 +15,14 @@ ApplicationWindow {
     //上面的主体部分
     Rectangle{
         id:main
-        color:"red"
-        x:20
-        y:20
-        width: 1280
-        height: 600
+        x:20;y:20
+        width: 1280;height: 600
 
         //画面显示
         Rectangle{
             id: rect1
-            // color: "black"
-            width: 1000
-            height: 600
+            color: "black"
+            width: 1000;height: 600
             visible: true
             border.width: 3
 
@@ -36,7 +32,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 // 导入文件
                 // audioSource:"file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
-                // audioSource: "file:////root/tmp/Three.Little.Pigs.1933.avi"
+                // audioSource: "file:///root/tmp/Three.Little.Pigs.1933.avi"
             }
         }
 

@@ -15,7 +15,7 @@ Rectangle {
         height:40
 
         //按钮内容
-        contentItem:Column{
+        contentItem:Row{
             Image{
                 source:"/root/加.svg"
                 width:20
