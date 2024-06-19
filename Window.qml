@@ -34,13 +34,84 @@ ApplicationWindow {
         //剪切下来的片段
         Rectangle{
             id: rect2
-            color: "grey"
+            color: "white"
             width: 250
             height: 600
             border.width: 3
             anchors.left:rect1.right
 
+            MySqureButton{
+                text:qsTr("素材列表")
+                textColor:"black"
+                defaultColor:"gray"
+                opacity:0.5
+                anchors.topMargin:20
+                width:rect2.width
+            }
+            Button{
+                id:leftButton
+                anchors{
+                    bottom: parent.bottom
+                    left:parent.left
+                    margins:10
+                }
+                width:100
+                height:40
+
+                //按钮内容
+                contentItem:Column{
+                    Image{
+                        source:"/root/加.svg"
+                        width:20
+                        height:20
+                    }
+                    Text{
+                        text:"ADD"
+                        color:"white"
+                        font.bold:true
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                }
+                //设置背景颜色
+                background:Rectangle{
+                    radius:5
+                    color:leftButton.down?(Qt.darker("gray",1.5)):"gray"
+                }
+
+            }
+            Button{
+                id:rightButton
+                anchors{
+                    bottom:parent.bottom
+                    right:parent.right
+                    margins:10
+                }
+                width:100
+                height:40
+                contentItem:Row{
+                    anchors.right:parent.right
+                    Text{
+                        text:"REMOVE"
+                        color:"white"
+                        font.bold:true
+                        anchors.verticalCenter:parent.verticalCenter
+                    }
+                    Image{
+                        source:"/root/减.svg"
+                        width:20
+                        height: 20
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                }
+                //设置背景颜色
+                background:Rectangle{
+                    color:rightButton.down?(Qt.darker("gray",1.5)):"gray"
+                    radius:5
+                }
+            }
         }
+
     }
 
     //进度显示
@@ -75,4 +146,6 @@ ApplicationWindow {
         anchors.top: rect4.bottom
         anchors.horizontalCenter: main.horizontalCenter
     }
+
+
 }
