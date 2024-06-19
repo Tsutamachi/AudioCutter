@@ -11,6 +11,8 @@ ApplicationWindow {
     // visible: true
     title: qsTr("cutter")
 
+
+
     //上面的主体部分
     Rectangle{
         id:main
@@ -58,14 +60,25 @@ ApplicationWindow {
     }
 
     //Button
-    Rectangle{
-        id: rect4
-        color:"blue"
-        border.width: 3
+    RowLayout{
+        id: rLaout
         width: 1200
         height: 110
         anchors.top: rect3.bottom
         anchors.horizontalCenter: main.horizontalCenter
+        MyRadioButton{
+            id:rbtn1
+            text: "打开文件"
+            radius: 50
+            // Layout.rightMargin: 5
+            anchors.rightMargin: rbtn2.left
+        }
+        MyRadioButton{
+            id:rbtn2
+            radius: 50
+            text: "打开文件"
+            anchors.leftMargin: 5
+        }
     }
 
     //状态栏
