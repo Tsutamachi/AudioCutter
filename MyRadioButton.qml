@@ -8,10 +8,12 @@ Rectangle {
     width: radius*2
     height: radius*2
     radius: radius
+    anchors.margins: 50
     color: "grey"
     opacity: 0.8
+
     required property string text
-    required property bool enable//用于做剪辑开始结束的顺序
+    required property bool enable//用于做剪辑开始、结束的同步
     Text{
         id:txt
         text: myRaBton.text

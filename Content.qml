@@ -3,19 +3,44 @@ import QtQuick
 import QtMultimedia
 import QtQuick.Controls
 
-Item{
-    property url audioSource // 添加了文件路径
+Rectangle{
+    property alias dialogs: _dialogs
+    property url audioSource // 文件路径
+
+    //选择文件前的背景图片
     Image{
         id:bgimg
         source: "file:///usr/share/wallpapers/stardust/20200601.jpg"
         anchors.fill: parent
         visible: true
-
-        // 添加一个点击事件，用于加载和播放视频
         TapHandler{
-            onTapped: content.loadVideo()
+            onTapped: {
+                content.loadVideo()// 用于加载和播放视频
+                console.log("Content.Image:"+audioSource)
+            }
         }
     }
+
+    function loadVideo(){
+        bgimg.visible=false
+        videoItem.visible=true
+    }
+
+
+    Dialogs{
+        id:_dialogs
+        openfile.onAccepted:{
+            // setFileModel(openfile.selectedFile)
+            audioSource = openfile.selectedFile
+            console.log("Dialogs: "+audioSource)
+        }
+    }
+    // function setFileModel(){
+    //     fileModel.clear();
+    //     var data={"audioSource": arguments[0]}
+    //     fileModel.append(data);
+    // }
+
 
     Item{
         id: videoItem
@@ -27,7 +52,7 @@ Item{
             source:audioSource
             audioOutput: AudioOutput{}
             videoOutput:videoOutput
-            autoPlay:true
+            // autoPlay:true
         }
         VideoOutput{
             id: videoOutput;
@@ -53,14 +78,8 @@ Item{
 
         onValueChanged: {
             if(!slider.dragging)
-            {
                 player.position = slider.value
-            }
         }
     }
 
-    function loadVideo(){
-        bgimg.visible=false
-        videoItem.visible=true
-    }
 }

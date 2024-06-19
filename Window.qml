@@ -12,8 +12,6 @@ ApplicationWindow {
     // visible: true
     title: qsTr("cutter")
 
-
-
     //上面的主体部分
     Rectangle{
         id:main
@@ -38,7 +36,7 @@ ApplicationWindow {
                 anchors.fill: parent
                 // 导入文件
                 // audioSource:"file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
-                audioSource: "file:////root/tmp/Three.Little.Pigs.1933.avi"
+                // audioSource: "file:////root/tmp/Three.Little.Pigs.1933.avi"
             }
         }
 
@@ -51,75 +49,15 @@ ApplicationWindow {
             border.width: 3
             anchors.left:rect1.right
 
-            MySqureButton{
-                text:qsTr("素材列表")
-                textColor:"black"
-                defaultColor:"gray"
-                opacity:0.5
-                anchors.topMargin:20
-                width:rect2.width
+            ListMessage{
+                width:parent.width
+                anchors.topMargin:10
+                anchors.top: parent.top
             }
-            Button{
-                id:leftButton
-                anchors{
-                    bottom: parent.bottom
-                    left:parent.left
-                    margins:10
-                }
-                width:100
-                height:40
 
-                //按钮内容
-                contentItem:Column{
-                    Image{
-                        source:"/root/加.svg"
-                        width:20
-                        height:20
-                    }
-                    Text{
-                        text:"ADD"
-                        color:"white"
-                        font.bold:true
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-                }
-                //设置背景颜色
-                background:Rectangle{
-                    radius:5
-                    color:leftButton.down?(Qt.darker("gray",1.5)):"gray"
-                }
-
-            }
-            Button{
-                id:rightButton
-                anchors{
-                    bottom:parent.bottom
-                    right:parent.right
-                    margins:10
-                }
-                width:100
-                height:40
-                contentItem:Row{
-                    anchors.right:parent.right
-                    Text{
-                        text:"REMOVE"
-                        color:"white"
-                        font.bold:true
-                        anchors.verticalCenter:parent.verticalCenter
-                    }
-                    Image{
-                        source:"/root/减.svg"
-                        width:20
-                        height: 20
-                        anchors.verticalCenter: parent.verticalCenter
-                    }
-
-                }
-                //设置背景颜色
-                background:Rectangle{
-                    color:rightButton.down?(Qt.darker("gray",1.5)):"gray"
-                    radius:5
-                }
+            Buttons1{
+                id:_buttons1
+                anchors.bottom: parent.bottom
             }
         }
 
@@ -138,69 +76,16 @@ ApplicationWindow {
 
     //Button
     Rectangle{
-        id: _buttons
+        id: _buttons2
         width: 1200
         height: 120
         anchors.top: rect3.bottom
         anchors.horizontalCenter: main.horizontalCenter
         anchors.topMargin: 10
         anchors.bottomMargin: 10
-        property int mar: 50
-        // color:"red"
 
-        Rectangle{
-            id: combibuttons
-            // color:"black"
-            width: 700
-            height: 100
-            anchors.centerIn: _buttons
-
-            MyRadioButton{
-                id:_openfile
-                text: "打开文件"
-                enable:true
-                radius: 50
-                // Layout.rightMargin: 5//用Layout就要用RowLayout,不用anchors
-                anchors.margins: _buttons.mar
-            }
-            MyRadioButton{
-                id:_play
-                text: "播放视频"
-                enable:true
-                radius: 50
-                anchors.margins: _buttons.mar
-                anchors.left: _openfile.right
-            }
-            MyRadioButton{
-                id:_startcut
-                radius: 50
-                text: "剪辑起点"
-                enable:true
-                anchors.margins: _buttons.mar
-                anchors.left: _play.right
-                TapHandler{
-                    onTapped: ()=>{_endcut.enable =true}
-                }
-            }
-            MyRadioButton{
-                id:_endcut
-                radius: 50
-                text: "剪辑终点"
-                enable:false
-                anchors.margins: _buttons.mar
-                anchors.left: _startcut.right
-                TapHandler{
-                    onTapped: ()=>{_endcut.enable = !_endcut.enable}
-                }
-            }
-            MyRadioButton{
-                id:_save
-                radius: 50
-                text: "保存文件"
-                enable:true
-                anchors.margins: _buttons.mar
-                anchors.left: _endcut.right
-            }
+        Buttons2{
+            id:buttons2
         }
 
     }
@@ -212,7 +97,7 @@ ApplicationWindow {
         width: 1200
         height: 20
         border.width: 3
-        anchors.top: rLaout.bottom
+        anchors.top: _buttons2.bottom
         anchors.horizontalCenter: main.horizontalCenter
     }
 
