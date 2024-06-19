@@ -65,12 +65,17 @@ Rectangle {
         TapHandler{onTapped: ()=>{saveTriggered()}}
     }
 
+
+
+
+
     function openfileTriggered() {
         content.dialogs.openfile.open();
     }
+
     //播放视频的状态控制
     function playTriggered(){
-        if(content.audioSource !=="")
+        if(content.audioSource !=="")//isEmpty也不行。url怎么对空值进行判断
             content.bgimg.visible = false
 
         //这里只能播放，不能停止？？？？

@@ -31,8 +31,9 @@ ApplicationWindow {
                 id:content
                 anchors.fill: parent
                 // 导入文件
-                // audioSource:"file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
+                audioSource:"file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
                 // audioSource: "file:///root/tmp/Three.Little.Pigs.1933.avi"
+                // audioSource: "file:///root/tmp/Nathan Evans - Wellerman (Sea Shanty) .mkv"
             }
         }
 
