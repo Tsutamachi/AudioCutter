@@ -1,8 +1,13 @@
 import QtQuick
 import QtQuick.Controls
+import "Controller.js" as controller
 
 Rectangle {
     property alias openfile: _openfile
+    property alias play: _play
+    property alias startcut: _startcut
+    property alias endcut: _endcut
+    property alias save: _save
 
     width:openfile.radius*2*5 +50*6
     height: openfile.radius*2
@@ -16,9 +21,7 @@ Rectangle {
         radius: 50
         // Layout.rightMargin: 5//用Layout就要用RowLayout,不用anchors
         anchors.left: parent.left
-        TapHandler{
-            onTapped: ()=>{content.dialogs.openfile.open()}
-        }
+        TapHandler{onTapped: ()=>{controller.openfileTriggered()}}
     }
     MyRadioButton{
         id:_play
@@ -27,6 +30,7 @@ Rectangle {
         radius: 50
         anchors.margins: 50
         anchors.left: _openfile.right
+        TapHandler{onTapped: ()=>{controller.playTriggered()}}
     }
     MyRadioButton{
         id:_startcut
@@ -35,9 +39,7 @@ Rectangle {
         enable:true
         anchors.margins: 50
         anchors.left: _play.right
-        TapHandler{
-            onTapped: ()=>{_endcut.enable =true}
-        }
+        TapHandler{onTapped: ()=>{controller.startcutTriggered()}}
     }
     MyRadioButton{
         id:_endcut
@@ -46,9 +48,7 @@ Rectangle {
         enable:false
         anchors.margins: 50
         anchors.left: _startcut.right
-        TapHandler{
-            onTapped: ()=>{_endcut.enable = !_endcut.enable}
-        }
+        TapHandler{onTapped: ()=>{controller.endcutTriggered()}}
     }
     MyRadioButton{
         id:_save
@@ -57,6 +57,7 @@ Rectangle {
         enable:true
         anchors.margins: 50
         anchors.left: _endcut.right
+        TapHandler{onTapped: ()=>{controller.saveTriggered()}}
     }
 
 }
