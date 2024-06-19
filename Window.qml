@@ -1,7 +1,8 @@
+// Window.qml
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-
+import QtMultimedia
 ApplicationWindow {
     width: 1300
     height: 920
@@ -30,10 +31,15 @@ ApplicationWindow {
             height: 600
             visible: true
             border.width: 3
+
+            // 播放视频文件
             Content{
                 id:content
+                anchors.fill: parent
+                // 导入文件
+                // audioSource:"file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
+                audioSource: "file:////root/tmp/Three.Little.Pigs.1933.avi"
             }
-
         }
 
         //剪切下来的片段
@@ -88,7 +94,8 @@ ApplicationWindow {
         width: 1200
         height: 20
         border.width: 3
-        anchors.top: rect4.bottom
+        anchors.top: rLaout.bottom
         anchors.horizontalCenter: main.horizontalCenter
     }
+
 }
