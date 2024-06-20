@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import "Controller.js" as Controller
 
 Rectangle {
     // anchors.right: parent.right
@@ -65,6 +66,11 @@ Rectangle {
         background:Rectangle{
             color:rightButton.down?(Qt.darker("gray",1.5)):"gray"
             radius:5
+        }
+        TapHandler{
+            onTapped:()=>{
+                         Controller.removeButton();
+                     }
         }
     }
 }

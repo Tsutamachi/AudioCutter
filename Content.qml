@@ -24,12 +24,6 @@ Rectangle{
             content.bgimg.visible = false
         }
     }
-    // function setFileModel(){
-    //     fileModel.clear();
-    //     var data={"audioSource": arguments[0]}
-    //     fileModel.append(data);
-    // }
-
 
     //选择文件前的背景图片
     Image{
@@ -39,9 +33,6 @@ Rectangle{
         visible: true
         TapHandler{
             onTapped: {
-                // 用于隐藏背景图片、显示视频
-                // if(content.audioSource.toString() === "")//为什么这里判断空值有问题
-                //      bgimg.visible=false
                 videoItem.visible=true
                 player.play()
                 console.log("Content.Image:"+audioSource)
@@ -53,27 +44,24 @@ Rectangle{
     Item{
         id: _videoItem
         anchors.fill: parent
-        // visible: false
         focus: true
 
         MediaPlayer{
             id: _player
             source:audioSource
-            // source: "file:///root/tmp/Three.Little.Pigs.1933.avi"
             audioOutput: AudioOutput{}
             videoOutput:videoOutput
-            // autoPlay:true
         }
         VideoOutput{
             id: videoOutput;
             anchors.fill: parent
             fillMode: VideoOutput.PreserveAspectFit
-            // orientation: 90
         }
 
 
         //按键控制快进前移和播放（不包括从stopped->play）
         //为什么这里不能用player替换MediaPlayer????
+        // Keys.enabled: true//没用
         Keys.onSpacePressed: {
             player.playbackState === MediaPlayer.PlayingState? player.pause(): player.play();
             console.log("Space pressed!")
@@ -86,6 +74,22 @@ Rectangle{
             player.position +=2000//前移2000ms
             console.log("Space pressed!")
    }
+        //哪一个性能更好？
+        // Keys.onPressed:(event)=>{
+        //                    if(event.key ===Qt.Key_Space){
+        //                        player.playbackState === MediaPlayer.PlayingState? player.pause(): player.play();
+        //                        console.log("Space pressed!")
+        //                    }
+        //                    if(event.key ===Qt.Key_Left){
+        //                        player.position -=2000//前移2000ms
+        //                       console.log("Space pressed!")
+        //                    }
+        //                    if(event.key ===Qt.Key_Left){
+        //                        player.position +=2000//前移2000ms
+        //                       console.log("Space pressed!")
+        //                    }
+        //                }
+
         //点击控制播放(包括从stopped->play)
         // TapHandler{onTapped: ()=>{controller.playTriggered()}}
         TapHandler{
@@ -114,20 +118,20 @@ Rectangle{
                 // console.log("timer once")
             }
         }
-        //  onValueChanged: {
-        //         // times = (times+1)/100//修改100次执行一次？——————不能保证快进有效了
-        //      // if(times)
-        //      // {
-        //          if (!slider.dragging) {
-        //              // 如果计时器已经在运行，先停止它
-        //              if (positionUpdateTimer.running) {
-        //                  positionUpdateTimer.stop();
-        //              }
-        //              // 启动计时器，等待interval毫秒后更新播放位置
-        //              positionUpdateTimer.start();
-        //          }
-        //      // }
-        // }
+         onValueChanged: {
+                // times = (times+1)/100//修改100次执行一次？——————不能保证快进有效了
+             // if(times)
+             // {
+                 if (!slider.dragging) {
+                     // 如果计时器已经在运行，先停止它
+                     if (positionUpdateTimer.running) {
+                         positionUpdateTimer.stop();
+                     }
+                     // 启动计时器，等待interval毫秒后更新播放位置
+                     positionUpdateTimer.start();
+                 }
+             // }
+        }
 
 
 
@@ -213,11 +217,5 @@ Rectangle{
         //             }
         //         }
         //     }
-
-
-
-
-
-
     }
 }
