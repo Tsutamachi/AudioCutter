@@ -34,7 +34,10 @@ qt_add_qml_module(
   QML_FILES
   Buttons1.qml
   QML_FILES
-  Controller.js)
+  Controller.js
+  SOURCES
+  videoedit.h
+  videoedit.cpp)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1. If
 # you are developing for iOS or macOS you should consider setting an explicit,
