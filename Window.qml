@@ -5,12 +5,12 @@ import QtQuick.Controls
 import QtMultimedia
 import "Controller.js" as Controller
 ApplicationWindow {
-    width: 1300
-    height: 920
+    id:window
+    width: 1100
+    height: 900
     visible: true
     // minimumWidth: 1480;//界面最小宽
     // minimumHeight: 900;//界面最小高
-    // visible: true
     title: qsTr("cutter")
 
     property alias dialogs: _dialogs
@@ -18,14 +18,15 @@ ApplicationWindow {
     //上面的主体部分
     Rectangle{
         id:main
-        x:20;y:20
-        width: 1280;height: 600
+        x:parent.width*0.01; y:parent.height*0.01
+        width: parent.width
+        height: parent.height*0.65
 
         //画面显示
         Rectangle{
             id: rect1
             color: "black"
-            width: 1000;height: 600
+            width: parent.width*0.7;height: main.height
             visible: true
             border.width: 3
 
@@ -44,8 +45,8 @@ ApplicationWindow {
         Rectangle{
             id: rect2
             color: "white"
-            width: 250
-            height: 600
+            width: rect1.width*0.3
+            height: rect1.height
             border.width: 3
             anchors.left:rect1.right
 
@@ -67,20 +68,21 @@ ApplicationWindow {
     Rectangle{
         id: rect3
         color:"yellow"
-        width: 1200
-        height: 120
+        width: rect1.width+rect2.width
+        height: window.height*0.1
         border.width: 3
         anchors.top: main.bottom
-        anchors.horizontalCenter: main.horizontalCenter
+        x:parent.width*0.01
     }
 
     //Button
     Rectangle{
         id: _buttons2
-        width: 1200
-        height: 120
+        width: rect1.width+rect2.width
+        height: rect3.height*1.1
+        x:parent.width*0.01
+
         anchors.top: rect3.bottom
-        anchors.horizontalCenter: main.horizontalCenter
         anchors.topMargin: 10
         anchors.bottomMargin: 10
 
@@ -93,12 +95,19 @@ ApplicationWindow {
     //状态栏
     Rectangle{
         id: rect5
-        color:"white"
-        width: 1200
-        height: 20
-        border.width: 3
+        // color:"red"
+        width: rect1.width+rect2.width
+        height: window.width*0.02
+        x:parent.width*0.01
         anchors.top: _buttons2.bottom
-        anchors.horizontalCenter: main.horizontalCenter
+
+        Text{
+            id:statusText
+            text: ""
+            anchors.left: parent
+            font.pixelSize: 12
+            font.weight: Font.Thin
+        }
     }
 
     Dialogs{

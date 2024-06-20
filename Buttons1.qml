@@ -26,7 +26,14 @@ Rectangle {
                 text:"ADD"
                 color:"white"
                 font.bold:true
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
+                HoverHandler{
+                    onHoveredChanged: ()=>{
+                                          statusText.text=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""
+                                      }
+                }
+
             }
         }
         //设置背景颜色
@@ -52,7 +59,14 @@ Rectangle {
                 text:"REMOVE"
                 color:"white"
                 font.bold:true
+                anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter:parent.verticalCenter
+                HoverHandler{
+                    onHoveredChanged: ()=>{
+                                          statusText.text=hovered?"Remove clips from your index":""
+                                      }
+                }
+
             }
             Image{
                 source:"/root/减.svg"
