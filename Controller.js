@@ -10,29 +10,31 @@ function openfileTriggered() {
     dialogs.openfile.open();
 }
 
-//播放视频的状态控制
-function playTriggered(){
-    if(content.audioSource.isValid)//isEmpty也不行。url怎么对空值进行判断
-        content.bgimg.visible = false
+// //播放视频的状态控制
+// function playTriggered(){
+//     if(content.audioSource.isValid)
+//         content.bgimg.visible = false
 
-    //这里只能播放，不能停止？？？？
-    if(content.player.playbackState === 0)//PlayingState read-only
-        content.player.pause();
-    if(content.player.playbackState === 1)//PauseState
-        content.player.play();
-    if(content.player.playbackState === 2)//StoppedState
-        content.player.play();
-    // content.player.playbackState === content.player.PlayingState? content.player.pause(): content.player.play();
-    console.log("Play-Button pressed!")
-}
+//     //这里只能播放，不能停止？？？？
+//     if(content.player.playbackState === 0)//PlayingState read-only
+//         content.player.pause();
+//     if(content.player.playbackState === 1)//PauseState
+//         content.player.play();
+//     if(content.player.playbackState === 2)//StoppedState
+//         content.player.play();
+//     // content.player.playbackState === content.player.PlayingState? content.player.pause(): content.player.play();
+//     console.log("Play-Button pressed!")
+// }
 //剪辑起点的设置
 function startcutTriggered(){
+    startcut.enable=false
     endcut.enable =true
     //todo
 }
 //剪辑终点的设置
 function endcutTriggered(){
     endcut.enable =false
+    startcut.enable=true
     //todo
 }
 //保存剪辑文件

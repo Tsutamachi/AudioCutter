@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtMultimedia
 import "Controller.js" as Controller
 
 Rectangle {
@@ -29,21 +30,28 @@ Rectangle {
         }
 
     }
+    // 解决暂停播放问题
     MyRadioButton{
         id:_play
-        text: "播放视频"
+        text: content.player.playbackState === MediaPlayer.PlayingState?"暂停视频":"播放视频"
         enable:true
         radius: 50
         anchors.margins: 50
         anchors.left: _openfile.right
-        TapHandler{onTapped: ()=>{Controller.playTriggered()}}
+        TapHandler{onTapped: ()=>{
+                                 content.player.playbackRate === MediaPlayer.PlayingState?content.player.pause():content.player.play()
+                                 content.player.playbackRate = !content.player.playbackRate
+                             }
+        }
         HoverHandler{
             onHoveredChanged: ()=>{
                                   statusText.text=hovered?"Play currently loaded media file":""
                               }
         }
-
     }
+
+
+
     MyRadioButton{
         id:_startcut
         radius: 50
@@ -54,7 +62,7 @@ Rectangle {
         TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
         HoverHandler{
             onHoveredChanged: ()=>{
-                                  if(!endcut.enable)
+                                  if(startcut.enable)
                                   statusText.text=hovered?"Start a new clip from the current timeline position":""
                               }
         }

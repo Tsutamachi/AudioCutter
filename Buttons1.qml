@@ -28,8 +28,7 @@ Rectangle {
                 color:"white"
                 font.bold:true
                 // Layout.alignment: parent.Center
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 HoverHandler{
                     onHoveredChanged: ()=>{
                                           statusText.text=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""
@@ -61,8 +60,7 @@ Rectangle {
                 text:"REMOVE"
                 color:"white"
                 font.bold:true
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter:parent.verticalCenter
+                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 HoverHandler{
                     onHoveredChanged: ()=>{
                                           statusText.text=hovered?"Remove clips from your index":""

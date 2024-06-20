@@ -50,39 +50,25 @@ Rectangle{
 
         //按键控制快进前移和播放（不包括从stopped->play）
         //为什么这里不能用player替换MediaPlayer????
-        // Keys.enabled: true//没用
+        Keys.enabled: true//没用
         Keys.onSpacePressed: {
-            player.playbackState === MediaPlayer.PlayingState? player.pause(): player.play();
+            _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
             console.log("Space pressed!")
         }
         Keys.onLeftPressed: {
-             player.position -=2000//前移2000ms
+             _player.position -=2000//前移2000ms
             console.log("Space pressed!")
         }
         Keys.onRightPressed: {
-            player.position +=2000//前移2000ms
+            _player.position +=2000//前移2000ms
             console.log("Space pressed!")
    }
-        //哪一个性能更好？
-        // Keys.onPressed:(event)=>{
-        //                    if(event.key ===Qt.Key_Space){
-        //                        player.playbackState === MediaPlayer.PlayingState? player.pause(): player.play();
-        //                        console.log("Space pressed!")
-        //                    }
-        //                    if(event.key ===Qt.Key_Left){
-        //                        player.position -=2000//前移2000ms
-        //                       console.log("Space pressed!")
-        //                    }
-        //                    if(event.key ===Qt.Key_Left){
-        //                        player.position +=2000//前移2000ms
-        //                       console.log("Space pressed!")
-        //                    }
-        //                }
+
 
         //点击控制播放(包括从stopped->play)
         // TapHandler{onTapped: ()=>{controller.playTriggered()}}
         TapHandler{
-            onTapped: ()=>{player.playbackState === MediaPlayer.PlayingState? player.pause(): player.play(); }
+            onTapped: ()=>{_player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play(); }
         }
     }
 
@@ -113,15 +99,23 @@ Rectangle{
              // if(times)
              // {
                  if (!slider.dragging) {
-                     // 如果计时器已经在运行，先停止它
-                     if (positionUpdateTimer.running) {
-                         positionUpdateTimer.stop();
-                     }
-                     // 启动计时器，等待interval毫秒后更新播放位置
-                     positionUpdateTimer.start();
+                     // // 如果计时器已经在运行，先停止它
+                     // if (positionUpdateTimer.running) {
+                     //     positionUpdateTimer.stop();
+                     // }
+                     // // 启动计时器，等待interval毫秒后更新播放位置
+                     // positionUpdateTimer.start();
+
+                     // 如果不是用户拖动，则不做出处理
+                     return
                  }
              // }
+                 else
+                     // 更新实时位置，但是有顿感，这是由于Timer造成的
+                     player.setPosition(slider.value)
         }
+
+
 
 
 
