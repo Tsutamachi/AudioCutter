@@ -7,7 +7,7 @@ function removeButton(){
 //Button2中调用Dialogs
 //打开文件的组建调用
 function openfileTriggered() {
-    content.dialogs.openfile.open();
+    dialogs.openfile.open();
 }
 
 //播放视频的状态控制
@@ -38,4 +38,16 @@ function endcutTriggered(){
 //保存剪辑文件
 function saveTriggered(){
     //todo
+}
+
+
+//Content
+function setfilepath(){
+    // setFileModel(openfile.selectedFile)
+    // audioSource = "";
+    // player.stop()
+    content.audioSource = dialogs.openfile.selectedFile
+    console.log("Dialogs: "+content.audioSource)
+    content.player.play()
+    content.bgimg.visible = false
 }

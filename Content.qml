@@ -2,28 +2,17 @@
 import QtQuick
 import QtMultimedia
 import QtQuick.Controls
-// import "Controller.js" as controller
+import "Controller.js" as Controller
 
 Rectangle{
-    property alias dialogs: _dialogs
+    // property alias dialogs: _dialogs
     property alias player: _player
     property alias bgimg: _bgimg
     property alias videoItem: _videoItem
+    property alias audioSource: _videoItem._audioSource
 
-    property url audioSource // 文件路径
 
-    Dialogs{
-        id:_dialogs
-        openfile.onAccepted:{
-            // setFileModel(openfile.selectedFile)
-            // audioSource = "";
-            // player.stop()
-            audioSource = openfile.selectedFile
-            console.log("Dialogs: "+audioSource)
-            player.play()
-            content.bgimg.visible = false
-        }
-    }
+
 
     //选择文件前的背景图片
     Image{
@@ -33,7 +22,6 @@ Rectangle{
         visible: true
         TapHandler{
             onTapped: {
-                videoItem.visible=true
                 player.play()
                 console.log("Content.Image:"+audioSource)
             }
@@ -43,6 +31,7 @@ Rectangle{
 
     Item{
         id: _videoItem
+        property url _audioSource// 文件路径
         anchors.fill: parent
         focus: true
 
@@ -104,13 +93,14 @@ Rectangle{
         from:0
         to: player.duration
         value: player.position
-        // property int times
 
         //暂停之后可以拖动，但是播放中的话不会起效
         //timer更新一次，就会产生一次卡顿————引入onValueChanged之后会好转
+
+        // property int times
         Timer {
             id: positionUpdateTimer
-            interval: 500//1s更新一次
+            interval: 500//0.5s更新一次
             repeat: true
             running:true
             onTriggered: {

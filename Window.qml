@@ -3,6 +3,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtMultimedia
+import "Controller.js" as Controller
 ApplicationWindow {
     width: 1300
     height: 920
@@ -11,6 +12,8 @@ ApplicationWindow {
     // minimumHeight: 900;//界面最小高
     // visible: true
     title: qsTr("cutter")
+
+    property alias dialogs: _dialogs
 
     //上面的主体部分
     Rectangle{
@@ -98,5 +101,11 @@ ApplicationWindow {
         anchors.horizontalCenter: main.horizontalCenter
     }
 
+    Dialogs{
+        id:_dialogs
+        openfile.onAccepted:{
+            Controller.setfilepath()
+        }
+    }
 
 }
