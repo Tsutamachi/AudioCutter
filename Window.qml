@@ -104,7 +104,7 @@ ApplicationWindow {
         Text{
             id:statusText
             text: ""
-            anchors.left: parent
+            anchors.left: parent.left
             font.pixelSize: 12
             font.weight: Font.Thin
         }

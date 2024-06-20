@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Layouts
 import "Controller.js" as Controller
 
 Rectangle {
@@ -16,7 +17,7 @@ Rectangle {
         height:40
 
         //按钮内容
-        contentItem:Row{
+        contentItem:RowLayout{
             Image{
                 source:"/root/加.svg"
                 width:20
@@ -26,6 +27,7 @@ Rectangle {
                 text:"ADD"
                 color:"white"
                 font.bold:true
+                // Layout.alignment: parent.Center
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.verticalCenter: parent.verticalCenter
                 HoverHandler{
@@ -53,7 +55,7 @@ Rectangle {
         }
         width:100
         height:40
-        contentItem:Row{
+        contentItem:RowLayout{
             anchors.right:parent.right
             Text{
                 text:"REMOVE"
