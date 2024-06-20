@@ -22,6 +22,12 @@ Rectangle {
         // Layout.rightMargin: 5//用Layout就要用RowLayout,不用anchors
         anchors.left: parent.left
         TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
+        HoverHandler{
+            onHoveredChanged: ()=>{
+                                  statusText.text=hovered?"Open and load a media file to begin":""
+                              }
+        }
+
     }
     MyRadioButton{
         id:_play
@@ -31,6 +37,12 @@ Rectangle {
         anchors.margins: 50
         anchors.left: _openfile.right
         TapHandler{onTapped: ()=>{Controller.playTriggered()}}
+        HoverHandler{
+            onHoveredChanged: ()=>{
+                                  statusText.text=hovered?"Play currently loaded media file":""
+                              }
+        }
+
     }
     MyRadioButton{
         id:_startcut
@@ -40,6 +52,13 @@ Rectangle {
         anchors.margins: 50
         anchors.left: _play.right
         TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
+        HoverHandler{
+            onHoveredChanged: ()=>{
+                                  if(!endcut.enable)
+                                  statusText.text=hovered?"Start a new clip from the current timeline position":""
+                              }
+        }
+
     }
     MyRadioButton{
         id:_endcut
@@ -49,6 +68,13 @@ Rectangle {
         anchors.margins: 50
         anchors.left: _startcut.right
         TapHandler{onTapped: ()=>{Controller.endcutTriggered()}}
+        HoverHandler{
+            onHoveredChanged: ()=>{
+                                  if(endcut.enable)
+                                  statusText.text=hovered?"End a new clip at the current timeline position":""
+                              }
+        }
+
     }
     MyRadioButton{
         id:_save
@@ -58,6 +84,12 @@ Rectangle {
         anchors.margins: 50
         anchors.left: _endcut.right
         TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
+        HoverHandler{
+            onHoveredChanged: ()=>{
+                                  statusText.text=hovered?"Save clips to a new media file":""
+                              }
+        }
+
     }
 
 }
