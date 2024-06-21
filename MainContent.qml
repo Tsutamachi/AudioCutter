@@ -17,7 +17,10 @@ Rectangle{
     Dialogs{
         id: _dialogs
         openfile.onAccepted: {
+            var now = new Date()
+            console.log("mediaStart time: "+now)
             Controller.setfilepath()
+
         }
     }
 
@@ -39,12 +42,20 @@ Rectangle{
     Item{
         id: _videoItem
         property url _audioSource// 文件路径
+        _audioSource: "file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
         anchors.fill: parent
         focus: true
+        // on_AudioSourceChanged: {Controller.positiontime()}//为何此时还是0。如果用按钮来启动的话可以
 
         MediaPlayer{
             id: _player
             source:audioSource
+            // metaData :data//Returns meta data for the current media used by the media player.
+
+            // MediaMetaData{
+            //     id:data
+            // }
+
             audioOutput: AudioOutput{}
             videoOutput:videoOutput
         }
@@ -71,7 +82,9 @@ Rectangle{
 
 
         TapHandler{
-            onTapped: ()=>{_player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play(); }
+            onTapped: ()=>{
+                          _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
+                      }
         }
     }
 

@@ -14,6 +14,8 @@ Rectangle{
     Layout.fillWidth: true
 
     property alias maincontent: _mainContent
+    // property alias startcut: _startcut
+
     Rectangle{
         id:main
         x:parent.width*0.01; y:parent.height*0.01
@@ -139,14 +141,15 @@ Rectangle{
         }
         MyRadioButton{
             id: _play
-            text: _mainContent.player.playbackState === MediaPlayer.PlayingState?"Start \n Clip":"Pause \n Clip"
+            // text: _mainContent.player.playbackState === MediaPlayer.PlayingState?"Play \n Media":"Pause \n Media"
+            text: _mainContent.player.playing?"Pause \n Media":"Play \nMedia"
             // text: "Play \n Media"
             enable:true
             radius: _openfile.radius
             // 定位问题，同下
             // anchors.margins: rect3.height*1.5
             anchors.left: _openfile.right
-            TapHandler{onTapped: ()=>{
+            TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
                                      _mainContent.player.playbackRate === MediaPlayer.PlayingState?_mainContent.player.pause():_mainContent.player.play()
                                      _mainContent.player.playbackRate = !_mainContent.player.playbackRate
                                  }
@@ -162,9 +165,11 @@ Rectangle{
             text: "Start \n Clip"
             enable:true
             radius: _openfile.radius
+            // property var startTime
             // anchors.margins: rect3.height
             anchors.left: _play.right
-            TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
+
+            TapHandler{onTapped: {Controller.startcutTriggered()} }
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_startcut.enable)
