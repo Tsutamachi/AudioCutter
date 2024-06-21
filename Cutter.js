@@ -11,32 +11,41 @@ function openfileTriggered() {
 }
 
 //剪辑起点的设置
-function startcutTriggered(){
+function startcutTriggered(qmlData){
     _startcut.enable=false
     _endcut.enable =true
 
     // positiontime()
     var now = new Date()
-    // console.log(now.getMilliseconds())
-    return now.getMilliseconds();
+    // console.log("cutTime: "+now.getTime())
+
+
+    var startTime =new Date(qmlData.getTime())
+    // console.log("startTime: "+startTime.getTime())
+    var startCuttingTime = now.getTime()- startTime.getTime()
+    console.log("startCuttingTime: "+startCuttingTime)
+    return startCuttingTime
 }
 //剪辑终点的设置
-function endcutTriggered(){
+function endcutTriggered(qmlData){
     _endcut.enable =false
     _startcut.enable=true
 
     var now = new Date()
-    console.log(now.getMilliseconds())
-    return now.getMilliseconds();
+    var endTime =new Date(qmlData.getTime())
+    var endCuttingTime = now.getTime()- endTime.getTime()
+    console.log("endCuttingTime "+endCuttingTime)
+    return endCuttingTime
 }
 //保存剪辑文件
 function saveTriggered(){
     //todo
 }
 
-// function setfileStartTime(){
-
-// }
+function setfileStartTime(){
+    var t = new Date();
+    return t;
+}
 
 
 //Content

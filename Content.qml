@@ -169,7 +169,7 @@ Rectangle{
             // anchors.margins: rect3.height
             anchors.left: _play.right
 
-            TapHandler{onTapped: {Controller.startcutTriggered()} }
+            TapHandler{onTapped: {Controller.startcutTriggered(maincontent.dialogs.mediaStartTime)} }
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_startcut.enable)
@@ -186,7 +186,7 @@ Rectangle{
             radius: _openfile.radius
             // anchors.margins: rect3.height
             anchors.left: _startcut.right
-            TapHandler{onTapped: ()=>{Controller.endcutTriggered()}}
+            TapHandler{onTapped: ()=>{Controller.endcutTriggered(maincontent.dialogs.mediaStartTime)}}
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_endcut.enable)
