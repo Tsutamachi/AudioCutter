@@ -1,4 +1,4 @@
-// 圆型按钮
+// 还是个部分ui组件 ，圆形按钮
 import QtQuick
 import QtQuick.Controls
 
@@ -14,11 +14,12 @@ Rectangle {
 
     required property string text
     required property bool enable//用于做剪辑开始、结束的同步
+
     Text{
         id:txt
         text: myRaBton.text
         anchors.centerIn: parent
-        font.pixelSize: 25
+        font.pixelSize: 15
         opacity: enable == true? 1: 0.5
     }
 

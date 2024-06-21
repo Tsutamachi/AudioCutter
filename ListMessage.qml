@@ -1,3 +1,5 @@
+// 还是个部分ui组件
+// ListMessage.qml
 import QtQuick
 import QtQuick.Controls
 
@@ -18,7 +20,8 @@ Button{
     }
     background:Rectangle{
         implicitHeight: 40
-        implicitWidth:85
+        // implicitWidth:85
+        implicitWidth:parent.width
         radius: 5
         //使用Qt.darker()根据颜色计算一个更暗的颜色
         color:btn.hovered?Qt.darker("gray",1.5):"gray"
