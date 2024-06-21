@@ -1,5 +1,5 @@
+#include "videoedit.h"
 #include <QProcess>
-#include "vedioedit.h"
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -65,7 +65,7 @@ int VideoEdit::videocut(QString in_filename,
             fprintf(stderr, "failed to allocate output stream\n");
             return -1;
         }
-        ret = avcodec_parameters_from_context(out_stream->codecpar, out_stream->codec);
+        // ret = avcodec_parameters_from_context(out_stream->codecpar, out_stream->codecpar);
         if (ret < 0) {
             fprintf(stderr, "could not copy the stream parameters\n");
             return -1;
@@ -99,15 +99,15 @@ int VideoEdit::videocut(QString in_filename,
             continue;
         }
         out_stream = ofmt_ctx->streams[packet.stream_index];
-        packet.pts = av_rescale_q_rnd(packet.pts,
-                                      in_stream->time_base,
-                                      out_stream->time_base,
-                                      AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
-        packet.dts = av_rescale_q_rnd(packet.dts,
-                                      in_stream->time_base,
-                                      out_stream->time_base,
-                                      AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
-        packet.duration = av_rescale_q(packet.duration, in_stream->time_base, out_stream->time_base);
+        // packet.pts = av_rescale_q_rnd(packet.pts,
+        //                               in_stream->time_base,
+        //                               out_stream->time_base,
+        //                               AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+        // packet.dts = av_rescale_q_rnd(packet.dts,
+        //                               in_stream->time_base,
+        //                               out_stream->time_base,
+        //                               AV_ROUND_NEAR_INF | AV_ROUND_PASS_MINMAX);
+        // packet.duration = av_rescale_q(packet.duration, in_stream->time_base, out_stream->time_base);
         packet.pos = -1;
         if (packet.pts < starttime * AV_TIME_BASE || packet.pts > endtime * AV_TIME_BASE) {
             av_packet_unref(&packet);

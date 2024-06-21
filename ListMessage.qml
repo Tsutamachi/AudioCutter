@@ -23,8 +23,4 @@ Button{
         //使用Qt.darker()根据颜色计算一个更暗的颜色
         color:btn.hovered?Qt.darker("gray",1.5):"gray"
     }
-
-
-
-
 }

@@ -1,3 +1,4 @@
+// Cutter.js
 //Button1中的调用
 // 控制层
 function removeButton(){

@@ -13,6 +13,8 @@ find_package(
   COMPONENTS Quick
   REQUIRED)
 
+find_package(FFmpeg REQUIRED)
+
 qt_add_executable(appCutter main.cpp)
 
 qt_add_qml_module(
@@ -23,23 +25,17 @@ qt_add_qml_module(
   1.0
   QML_FILES
   Window.qml
-  QML_FILES
   MySquareButton.qml
-  QML_FILES
   MyRadioButton.qml
-  QML_FILES
   MainContent.qml
-  QML_FILES
   ListMessage.qml
-  QML_FILES
   Dialogs.qml
-  QML_FILES
   Cutter.js
-  QML_FILES
   Content.qml
   SOURCES
   videoedit.h
-  videoedit.cpp)
+  videoedit.cpp
+  RESOURCES images.qrc)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1. If
 # you are developing for iOS or macOS you should consider setting an explicit,
@@ -53,7 +49,7 @@ set_target_properties(
              MACOSX_BUNDLE TRUE
              WIN32_EXECUTABLE TRUE)
 
-target_link_libraries(appCutter PRIVATE Qt6::Quick)
+target_link_libraries(appCutter PRIVATE Qt6::Quick FFmpeg::FFmpeg)
 
 include(GNUInstallDirs)
 install(

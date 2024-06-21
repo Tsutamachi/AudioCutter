@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/add.svg</file>
+        <file>icons/endclip.svg</file>
+        <file>icons/function-line.svg</file>
+        <file>icons/play.svg</file>
+        <file>icons/remove.svg</file>
+        <file>icons/save.svg</file>
+        <file>icons/open.svg</file>
+        <file>icons/pause.svg</file>
+        <file>icons/setting.svg</file>
+        <file>icons/startclip.svg</file>
+    </qresource>
+</RCC>

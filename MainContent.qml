@@ -27,12 +27,19 @@ Rectangle{
         source: "file:///usr/share/wallpapers/stardust/20200601.jpg"
         anchors.fill: parent
         visible: true
+        z:2
         TapHandler{
             onTapped: {
                 player.play()
                 console.log("Content.Image:"+audioSource)
             }
         }
+
+    }
+    Rectangle{
+        anchors.fill: parent
+        z:1
+        color: "black"
     }
 
 
@@ -41,6 +48,7 @@ Rectangle{
         property url _audioSource// 文件路径
         anchors.fill: parent
         focus: true
+        z:3
 
         MediaPlayer{
             id: _player
@@ -82,7 +90,7 @@ Rectangle{
         from:0
         to: player.duration
         value: player.position
-
+        z:3
 
         // property int times
         Timer {

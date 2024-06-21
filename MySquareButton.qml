@@ -1,12 +1,12 @@
 // MySquareButton.qml
-// 还是个部分ui组件，方形按钮
+// 这是个部分ui组件，方形按钮
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 Rectangle{
     id:mySqBton
     required property string _text
-    /*required*/ property url _imgSource
+    required property url _imgSource
     radius: 30
     // color: "grey"
 
@@ -19,8 +19,9 @@ Rectangle{
         contentItem:Rectangle{
             color:"transparent"
             Image{
-                // source:"/root/加.svg"
+                // source:"/root/add.svg"
                 source: _imgSource
+                anchors.right: txt.left
                 width:20
                 height:20
             }
@@ -43,3 +44,4 @@ Rectangle{
     }
 
 }
+
