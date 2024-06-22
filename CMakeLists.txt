@@ -52,8 +52,8 @@ set_target_properties(
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
              MACOSX_BUNDLE TRUE
              WIN32_EXECUTABLE TRUE)
-
-target_link_libraries(appCutter PRIVATE Qt6::Quick)
+find_package(FFmpeg REQUIRED)
+target_link_libraries(appCutter PRIVATE Qt6::Quick FFmpeg::FFmpeg)
 
 include(GNUInstallDirs)
 install(

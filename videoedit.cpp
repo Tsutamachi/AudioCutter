@@ -189,3 +189,81 @@ int VideoEdit::videocut(QString in_filename,
 //     // }
 //     //return 0;
 // }
+
+// 实现视频合并函数
+int VideoEdit::mergeVideos(const std::string &outputFile, const std::string &inputFiles)
+{
+    AVFormatContext *outputFormatCtx = nullptr;
+    AVFormatContext *inputFormatCtx = nullptr;
+    AVPacket pkt;
+
+    // 打开输出文件
+    if (avformat_alloc_output_context2(&outputFormatCtx, nullptr, nullptr, outputFile.c_str()) < 0) {
+        std::cerr << "Error creating output context." << std::endl;
+        return -1;
+    }
+
+    // 打开输入文件
+    std::string delimiter = "|";
+    size_t pos = 0;
+    std::string token;
+    while ((pos = inputFiles.find(delimiter)) != std::string::npos) {
+        token = inputFiles.substr(0, pos);
+        if (avformat_open_input(&inputFormatCtx, token.c_str(), nullptr, nullptr) != 0) {
+            std::cerr << "Error opening input file: " << token << std::endl;
+            return -1;
+        }
+        if (avformat_find_stream_info(inputFormatCtx, nullptr) < 0) {
+            std::cerr << "Error finding stream information." << std::endl;
+            return -1;
+        }
+        if (avformat_write_header(outputFormatCtx, nullptr) < 0) {
+            std::cerr << "Error writing header." << std::endl;
+            return -1;
+        }
+    }
+
+    // 写入流数据
+    while (av_read_frame(inputFormatCtx, &pkt) >= 0) {
+        if (pkt.stream_index >= 0) {
+            AVStream *in_stream = inputFormatCtx->streams[pkt.stream_index];
+            AVStream *out_stream = outputFormatCtx->streams[pkt.stream_index];
+
+            // 拷贝包数据
+            pkt.pts = av_rescale_q_rnd(pkt.pts,
+                                       in_stream->time_base,
+                                       out_stream->time_base,
+                                       static_cast<AVRounding>(AV_ROUND_NEAR_INF
+                                                               | AV_ROUND_PASS_MINMAX));
+            pkt.dts = av_rescale_q_rnd(pkt.dts,
+                                       in_stream->time_base,
+                                       out_stream->time_base,
+                                       static_cast<AVRounding>(AV_ROUND_NEAR_INF
+                                                               | AV_ROUND_PASS_MINMAX));
+            pkt.duration = av_rescale_q(pkt.duration, in_stream->time_base, out_stream->time_base);
+            pkt.pos = -1;
+
+            // 写入包数据
+            if (av_interleaved_write_frame(outputFormatCtx, &pkt) < 0) {
+                std::cerr << "Error writing packet." << std::endl;
+                return -1;
+            }
+            av_packet_unref(&pkt);
+        }
+    }
+
+    // 写入输出文件尾部
+    if (av_write_trailer(outputFormatCtx) < 0) {
+        std::cerr << "Error writing trailer." << std::endl;
+        return -1;
+    }
+
+    // 清理资源
+    avformat_close_input(&inputFormatCtx);
+    if (outputFormatCtx && !(outputFormatCtx->oformat->flags & AVFMT_NOFILE)) {
+        avio_closep(&outputFormatCtx->pb);
+    }
+    avformat_free_context(outputFormatCtx);
+
+    return 0;
+}

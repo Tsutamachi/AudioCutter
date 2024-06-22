@@ -13,5 +13,6 @@ public:
                  QString out_filename,
                  const double starttime,
                  const double endtime);
+    int mergeVideos(const std::string &outputFile, const std::string &inputFiles);
 signals:
 };
