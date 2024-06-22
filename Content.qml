@@ -60,32 +60,26 @@ Rectangle{
                     anchors.topMargin:10
                     anchors.top: rect2.top
                 }
+
                 MySquareButton{
                     id:_add
                     width: rect2.width*0.45
                     height: _add.width*0.3
                     _text:"ADD"
-                    HoverHandler{
-                        onHoveredChanged: ()=>{
-                                              statusText.text=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""
-                                          }
-                    }
+                    HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""}}
                     anchors{
                         bottom: parent.bottom
                         left: parent.left
                         margins: 10
                     }
                 }
+
                 MySquareButton{
                     id:_remove
                     width: _add.width
                     height: _add.width*0.3
                     _text: "REMOVE"
-                    HoverHandler{
-                        onHoveredChanged: ()=>{
-                                              statusText.text=hovered?"Remove clips from your index":""
-                                          }
-                    }
+                    HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Remove clips from your index":""}}
                     anchors{
                         bottom: parent.bottom
                         right: parent.right
@@ -132,21 +126,15 @@ Rectangle{
             // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Open and load a media file to begin":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Open and load a media file to begin":""} }
 
         }
         MyRadioButton{
             id: _play
             // text: _mainContent.player.playbackState === MediaPlayer.PlayingState?"Play \n Media":"Pause \n Media"
             text: _mainContent.player.playing?"Pause \n Media":"Play \nMedia"
-            // text: "Play \n Media"
             enable:true
             radius: _openfile.radius
-            // 定位问题，同下
             // anchors.margins: rect3.height*1.5
             anchors.left: _openfile.right
             TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
@@ -154,26 +142,20 @@ Rectangle{
                                      _mainContent.player.playbackRate = !_mainContent.player.playbackRate
                                  }
             }
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Play currently loaded media file":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Play currently loaded media file":""}}
         }
         MyRadioButton{
             id: _startcut
             text: "Start \n Clip"
             enable:true
             radius: _openfile.radius
-            // property var startTime
-            // anchors.margins: rect3.height
             anchors.left: _play.right
 
             TapHandler{onTapped: {Controller.startcutTriggered(maincontent.dialogs.mediaStartTime)} }
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_startcut.enable)
-                                      statusText.text=hovered?"Start a new clip from the current timeline position":""
+                                      footerText=hovered?"Start a new clip from the current timeline position":""
                                   }
             }
 
@@ -190,7 +172,7 @@ Rectangle{
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_endcut.enable)
-                                      statusText.text=hovered?"End a new clip at the current timeline position":""
+                                      footerText=hovered?"End a new clip at the current timeline position":""
                                   }
             }
         }
@@ -202,34 +184,14 @@ Rectangle{
             // anchors.margins:  rect3.height
             anchors.left: _endcut.right
             TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Save clips to a new media file":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}
         }
     }
-    // 状态栏
-    Rectangle{
-        id: rect5
-        color:"transparent"
-        width: rect1.width+rect2.width
-        height: _item.width*0.02
-        x:parent.width*0.01
-        anchors.top: _buttons2.bottom
 
-        Text{
-            id:statusText
-            text: ""
-            anchors.left: parent.left
-            font.pixelSize: 12
-            font.weight: Font.Thin
-        }
-    }
-    Dialogs{
-        id:_dialogs
-        openfile.onAccepted:{
-            Controller.setfilepath()
-        }
-    }
+    // Dialogs{
+    //     id:_dialogs
+    //     openfile.onAccepted:{
+    //         Controller.setfilepath()
+    //     }
+    // }
 }

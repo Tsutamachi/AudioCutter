@@ -8,7 +8,6 @@ Rectangle{
     required property string _text
     /*required*/ property url _imgSource
     radius: 30
-    // color: "grey"
 
     Button{
         id:_button
@@ -19,7 +18,7 @@ Rectangle{
         contentItem:Rectangle{
             color:"transparent"
             Image{
-                // source:"/root/加.svg"
+                id:img
                 source: _imgSource
                 width:20
                 height:20
