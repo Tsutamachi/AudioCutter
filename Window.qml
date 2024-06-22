@@ -13,7 +13,6 @@ ApplicationWindow {
     minimumHeight: 650
     minimumWidth: 920
     visible: true
-
     property alias footerText: statusText.text
 
     Content{

@@ -46,7 +46,7 @@ Rectangle{
     Item{
         id: _videoItem
         property url _audioSource// 文件路径
-        _audioSource: "file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
+        // _audioSource: "file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
         anchors.fill: parent
         focus: true
         // on_AudioSourceChanged: {Controller.positiontime()}//为何此时还是0。如果用按钮来启动的话可以
@@ -92,34 +92,34 @@ Rectangle{
         }
     }
 
-    Slider{
-        id:slider
-        width: parent.width
-        anchors.bottom: videoItem.bottom
-        from:0
-        to: player.duration
-        value: player.position
+    // Slider{
+    //     id:slider
+    //     width: parent.width
+    //     anchors.bottom: videoItem.bottom
+    //     from:0
+    //     to: player.duration
+    //     value: player.position
 
 
-        // property int times
-        Timer {
-            id: positionUpdateTimer
-            interval: 500//0.5s更新一次
-            repeat: true
-            running:true
-            onTriggered: {
-                player.setPosition(slider.value);
-                // console.log("timer once")
-            }
-        }
-        onValueChanged: {
-            if (!slider.dragging) {
-                return
-            }
-            else
-                // 更新实时位置，但是有顿感，这是由于Timer造成的
-                player.setPosition(slider.value)
-        }
+    //     // property int times
+    //     Timer {
+    //         id: positionUpdateTimer
+    //         interval: 500//0.5s更新一次
+    //         repeat: true
+    //         running:true
+    //         onTriggered: {
+    //             player.setPosition(slider.value);
+    //             // console.log("timer once")
+    //         }
+    //     }
+    //     onValueChanged: {
+    //         if (!slider.dragging) {
+    //             return
+    //         }
+    //         else
+    //             // 更新实时位置，但是有顿感，这是由于Timer造成的
+    //             player.setPosition(slider.value)
+    //     }
 
-    }
+    // }
 }

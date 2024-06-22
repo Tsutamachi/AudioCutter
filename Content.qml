@@ -12,10 +12,12 @@ Rectangle{
     anchors.fill: parent
     Layout.fillHeight: true
     Layout.fillWidth: true
+    // color:"grey"
 
     property alias maincontent: _mainContent
     // property alias startcut: _startcut
 
+    //画面显示
     Rectangle{
         id:main
         x:parent.width*0.01; y:parent.height*0.01
@@ -24,7 +26,7 @@ Rectangle{
         Layout.fillWidth: true
         // color:"red"
 
-        //画面显示
+        //视屏显示
         Rectangle{
             id: rect1
             color: "black"
@@ -91,16 +93,70 @@ Rectangle{
 
 
     }
+
     //进度显示
     Rectangle{
         id: rect3
         color:"yellow"
         width: rect1.width+rect2.width
-        height: _item.height*0.1
+        // height: _item.height*0.1
+        height:100
         border.width: 3
         anchors.top: main.bottom
         x:parent.width*0.01
+
+        //进度条背景
+        Image{
+            id:background
+            width: parent.width
+            height: parent.height
+            source: "file:///root/Qt作业/大作业/cutter/icons/film.jpg"
+            fillMode: Image.TileHorizontally
+            // Repeater
+        }
+
+        Slider{
+            id:slider
+            width: parent.width
+            height: parent.height
+            // anchors.bottom: videoItem.bottom
+            from:0
+            to: maincontent.player.duration
+            value: maincontent.player.position
+
+
+            Timer {
+                id: positionUpdateTimer
+                interval: 500//0.5s更新一次
+                repeat: true
+                running:true
+                onTriggered: { maincontent.player.setPosition(slider.value);}
+            }
+            // onValueChanged: {
+            //     if (slider.dragging) {
+            //         maincontent.player.setPosition(slider.value)
+            //     }
+            // }
+            onValueChanged: {
+                if (slider.dragging) {
+                    positionUpdateTimer.running = false
+                    maincontent.player.setPosition(slider.value)
+                } else {
+                    positionUpdateTimer.running = true
+                }
+            }
+        }
+        //进度指示针//位置有问题
+        Rectangle{
+            id:finger
+            width: 5
+            color:"black"
+            height:rect3.height+5
+            z:1
+            x: slider.value
+        }
     }
+
     //Button
     Rectangle{
         id: _buttons2
@@ -188,10 +244,4 @@ Rectangle{
         }
     }
 
-    // Dialogs{
-    //     id:_dialogs
-    //     openfile.onAccepted:{
-    //         Controller.setfilepath()
-    //     }
-    // }
 }
