@@ -11,4 +11,7 @@
         <file>icons/setting.svg</file>
         <file>icons/startclip.svg</file>
     </qresource>
+    <qresource prefix="/file">
+        <file>filepath.txt</file>
+    </qresource>
 </RCC>

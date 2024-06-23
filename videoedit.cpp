@@ -1,5 +1,11 @@
 #include "videoedit.h"
+#include <QDebug>
+#include <QFile>
+#include <QIODevice>
 #include <QProcess>
+#include <QTextStream>
+#include <QtCore>
+
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
@@ -188,4 +194,64 @@ int VideoEdit::videocut(QString in_filename,
     //     return -1;
     // }
     //return 0;
+}
+
+// 添加素材列表中要被合并的视频的路径，然后将他们写如到filepath.txt 文件中，用于视频的合并
+// to do 他需要接收clip的多个路径，没有与QML做交互，需要剪切后的路径
+void VideoEdit::readPath(const QStringList *paths)
+{
+    // 写入文件
+    QFile file;
+    file.setFileName("/root/Cut/AudioCutter/filepath.txt");
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text
+                  | QIODevice::Append)) // 以追加路径方式读到文本里面
+    {
+        QTextStream stream(&file);
+        for (const QString &path : *paths) {
+            stream << "file '" << path << "'\n";
+        }
+        file.close();
+    }
+}
+
+// 视频合并
+// 由于我是直接接收readPath 传递过来的路径，所以我直接打开filePath.txt就可以读取视频路径了
+void VideoEdit::videoMerge(QString dstName, QString dstPath)
+{
+    //ffmpeg -f concat -safe 0 -i filepath.txt -c copy -y videoMerge.mp4‘
+
+    QString ffmpegPath = "usr/bin/ffmpeg";
+
+    // 读取 filePath.txt 中的路径列表
+    QStringList fileList;
+    QFile file("/root/Cut/AudioCutter/filepath.txt");
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Fail to open filepath.txt for reading";
+        return;
+    }
+    QTextStream stream(&file);
+    while (!stream.atEnd()) {
+        QString line = stream.readLine().trimmed(); // 读取每一行，去除首尾空白字符
+        if (!line.isEmpty()) {
+            fileList << line;
+        }
+    }
+    file.close();
+
+    // 构建 ffmpeg 命令
+    QStringList arguments;
+    // 开启 ffmpeg 运行的进程
+    QProcess ffmpegProcess;
+    ffmpegProcess.setProgram(ffmpegPath);
+    ffmpegProcess.setArguments(arguments);
+
+    qDebug() << "Starting ffmpeg construction....";
+    ffmpegProcess.start();
+    ffmpegProcess.waitForFinished();
+
+    // 检查是否成功创建进程
+    if (ffmpegProcess.exitStatus() == QProcess::NormalExit && ffmpegProcess.exitCode() == 0)
+        qDebug() << "video merge successful";
+    else
+        qDebug() << "video merge failed" << ffmpegProcess.errorString();
 }

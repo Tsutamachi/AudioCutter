@@ -113,4 +113,7 @@ Rectangle{
         }
 
     }
+    VideoEdit{
+        id:videoEdit
+    }
 }

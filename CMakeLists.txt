@@ -21,6 +21,9 @@ qt_add_qml_module(
   appCutter
   URI
   Cutter
+  # 下面是C++类的注册
+  URI
+  "se.qt.videoEditing"
   VERSION
   1.0
   QML_FILES
@@ -35,7 +38,8 @@ qt_add_qml_module(
   SOURCES
   videoedit.h
   videoedit.cpp
-  RESOURCES images.qrc)
+  RESOURCES
+  images.qrc)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1. If
 # you are developing for iOS or macOS you should consider setting an explicit,
@@ -50,7 +54,7 @@ set_target_properties(
              WIN32_EXECUTABLE TRUE)
 
 target_link_libraries(appCutter PRIVATE Qt6::Quick FFmpeg::FFmpeg)
-
+include_directories("usr/bin/ffmpeg")
 include(GNUInstallDirs)
 install(
   TARGETS appCutter
