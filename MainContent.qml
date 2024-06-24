@@ -11,22 +11,13 @@ Rectangle{
     property alias videoItem: _videoItem
     property alias audioSource: _videoItem._audioSource
     property alias dialogs: _dialogs
-    //mediaStartTime在dialogs下
 
     color:"black"
 
     Dialogs{
         id: _dialogs
         property var mediaStartTime
-        openfile.onAccepted: {
-            var now = new Date()
-            // console.log("mediaStart time: "+now)
-            var timeInJs = Controller.setfileStartTime()
-            mediaStartTime = new Date(timeInJs.getTime())
-            console.log("mediaStartTime: "+mediaStartTime)
-            Controller.setfilepath()
-
-        }
+        openfile.onAccepted: {Controller.setfilepath()}
     }
 
     //选择文件前的背景图片

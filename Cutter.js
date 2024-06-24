@@ -12,31 +12,34 @@ function removeButton(){
     }
 
     //剪辑起点的设置
-    function startcutTriggered(qmlData){
-        _startcut.enable=false
-        _endcut.enable =true
+    function startcutTriggered(){
+        if(_startcut.enable === true)
+        {
+            _startcut.enable=false
+            _endcut.enable =true
 
-        // positiontime()
-        var now = new Date()
-        // console.log("cutTime: "+now.getTime())
+            var now = maincontent.player.position
+            console.log("startCuttingTime: "+ now)
+            /*不需要这么做，把问题复杂化了还有bug
+            var startTime =new Date(qmlData.getTime()).getTime()
+            console.log("startTime "+startTime)
+            var startCuttingTime = now- startTime.getTime()
+            console.log("startCuttingTime: "+startCuttingTime)*/
+            return now
+        }
 
-
-        var startTime =new Date(qmlData.getTime())
-        // console.log("startTime: "+startTime.getTime())
-        var startCuttingTime = now.getTime()- startTime.getTime()
-        console.log("startCuttingTime: "+startCuttingTime)
-        return startCuttingTime
     }
     //剪辑终点的设置
-    function endcutTriggered(qmlData){
-        _endcut.enable =false
-        _startcut.enable=true
+    function endcutTriggered(){
+        if(_endcut.enable === true)
+        {
+            _endcut.enable =false
+            _startcut.enable=true
 
-        var now = new Date()
-        var endTime =new Date(qmlData.getTime())
-        var endCuttingTime = now.getTime()- endTime.getTime()
-        console.log("endCuttingTime "+endCuttingTime)
-        return endCuttingTime
+            var now = maincontent.player.position
+            console.log("endCuttingTime: "+ now)
+            return now
+        }
     }
     //保存剪辑文件
     function saveTriggered(){

@@ -161,25 +161,19 @@ Rectangle{
     Rectangle{
         id: _buttons2
         width: rect1.width+rect2.width
-        // height: rect3.height*1.1
         height:_openfile.height*1.2
-        // x:parent.width*0.01
         x:main.x
-        // color:"red"
 
         anchors.top: rect3.bottom
         anchors.topMargin: 10
         anchors.bottomMargin: 10
-        // anchors.horizontalCenter: main.horizontalCenter
         anchors.left: main.left
 
         MyRadioButton{
             id: _openfile
             text: "Open \n Media"
             enable:true
-            // radius: _buttons2.width*0.04
             radius: 50
-            // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
             HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Open and load a media file to begin":""} }
@@ -191,7 +185,6 @@ Rectangle{
             text: _mainContent.player.playing?"Pause \n Media":"Play \nMedia"
             enable:true
             radius: _openfile.radius
-            // anchors.margins: rect3.height*1.5
             anchors.left: _openfile.right
             TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
                                      _mainContent.player.playbackRate === MediaPlayer.PlayingState?_mainContent.player.pause():_mainContent.player.play()
@@ -207,15 +200,13 @@ Rectangle{
             radius: _openfile.radius
             anchors.left: _play.right
 
-            TapHandler{onTapped: {Controller.startcutTriggered(maincontent.dialogs.mediaStartTime)} }
+            TapHandler{onTapped: {Controller.startcutTriggered()} }
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_startcut.enable)
                                       footerText=hovered?"Start a new clip from the current timeline position":""
                                   }
             }
-
-
         }
         MyRadioButton{
             id: _endcut
@@ -224,7 +215,7 @@ Rectangle{
             radius: _openfile.radius
             // anchors.margins: rect3.height
             anchors.left: _startcut.right
-            TapHandler{onTapped: ()=>{Controller.endcutTriggered(maincontent.dialogs.mediaStartTime)}}
+            TapHandler{onTapped: ()=>{Controller.endcutTriggered()}}
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_endcut.enable)
