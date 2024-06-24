@@ -13,8 +13,12 @@ Rectangle{
     anchors.fill: parent
     Layout.fillHeight: true
     Layout.fillWidth: true
+    // color:"grey"
 
     property alias maincontent: _mainContent
+    // property alias startcut: _startcut
+
+    //画面显示
     Rectangle{
         id:main
         x:parent.width*0.01; y:parent.height*0.01
@@ -23,7 +27,7 @@ Rectangle{
         Layout.fillWidth: true
         // color:"red"
 
-        //画面显示
+        //视屏显示
         Rectangle{
             id: rect1
             color: "black"
@@ -59,23 +63,21 @@ Rectangle{
                     anchors.topMargin:10
                     anchors.top: rect2.top
                 }
+
                 MySquareButton{
                     id:_add
                     width: rect2.width*0.45
                     height: _add.width*0.3
                     _imgSource:"qrc:/icons/add.svg"
                     _text:"ADD"
-                    HoverHandler{
-                        onHoveredChanged: ()=>{
-                                              statusText.text=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""
-                                          }
-                    }
+                    HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""}}
                     anchors{
                         bottom: parent.bottom
                         left: parent.left
                         margins: 10
                     }
                 }
+
                 MySquareButton{
                     id:_remove
                     width: _add.width
@@ -98,24 +100,76 @@ Rectangle{
 
 
     }
+
     //进度显示
     Rectangle{
         id: rect3
         color:"yellow"
         width: rect1.width+rect2.width
-        height: _item.height*0.1
+        // height: _item.height*0.1
+        height:100
         border.width: 3
         anchors.top: main.bottom
         x:parent.width*0.01
+
+        //进度条背景
+        Image{
+            id:background
+            width: parent.width
+            height: parent.height
+            source: "file:///root/Qt作业/大作业/cutter/icons/film.jpg"
+            fillMode: Image.TileHorizontally
+            // Repeater
+        }
+
+        Slider{
+            id:slider
+            width: parent.width
+            height: parent.height
+            // anchors.bottom: videoItem.bottom
+            from:0
+            to: maincontent.player.duration
+            value: maincontent.player.position
+
+
+            Timer {
+                id: positionUpdateTimer
+                interval: 500//0.5s更新一次
+                repeat: true
+                running:true
+                onTriggered: { maincontent.player.setPosition(slider.value);}
+            }
+            // onValueChanged: {
+            //     if (slider.dragging) {
+            //         maincontent.player.setPosition(slider.value)
+            //     }
+            // }
+            onValueChanged: {
+                if (slider.dragging) {
+                    positionUpdateTimer.running = false
+                    maincontent.player.setPosition(slider.value)
+                } else {
+                    positionUpdateTimer.running = true
+                }
+            }
+        }
+        //进度指示针//位置有问题
+        Rectangle{
+            id:finger
+            width: 5
+            color:"black"
+            height:rect3.height+5
+            z:1
+            x: slider.value
+        }
     }
+
     //Button
     Rectangle{
         id: _buttons2
         width: rect1.width+rect2.width
         height:_openfile.height*1.2
-        // x:parent.width*0.01
         x:main.x
-        // color:"red"
 
         anchors.top: rect3.bottom
         anchors.topMargin: 10
@@ -131,11 +185,7 @@ Rectangle{
             // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Open and load a media file to begin":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Open and load a media file to begin":""} }
 
         }
         Rectangle{
@@ -160,16 +210,12 @@ Rectangle{
             // 定位问题，同下
             // anchors.margins: rect3.height*1.5
             anchors.left: _open1.right
-            TapHandler{onTapped: ()=>{
+            TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
                                      _mainContent.player.playbackRate === MediaPlayer.PlayingState?_mainContent.player.pause():_mainContent.player.play()
                                      _mainContent.player.playbackRate = !_mainContent.player.playbackRate
                                  }
             }
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Play currently loaded media file":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Play currently loaded media file":""}}
         }
         Rectangle{
             id:_play1
@@ -179,7 +225,7 @@ Rectangle{
             anchors.top: _buttons2.verticalCenter
             Text {
                 id: txt2
-                text: "Play\nMedia"
+                text: _mainContent.player.playing?"Pause \n Media":"Play \nMedia"
                 color: "grey"
             }
         }
@@ -191,14 +237,13 @@ Rectangle{
             // anchors.margins: rect3.height
             anchors.left: _play1.right
             TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
+
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_startcut.enable)
-                                      statusText.text=hovered?"Start a new clip from the current timeline position":""
+                                      footerText=hovered?"Start a new clip from the current timeline position":""
                                   }
             }
-
-
         }
         Rectangle{
             id:_start1
@@ -223,7 +268,7 @@ Rectangle{
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_endcut.enable)
-                                      statusText.text=hovered?"End a new clip at the current timeline position":""
+                                      footerText=hovered?"End a new clip at the current timeline position":""
                                   }
             }
         }
@@ -247,11 +292,7 @@ Rectangle{
             imgSource: "file:///root/Cut/AudioCutter/icons/save.svg"
             anchors.left: _end1.right
             TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
-            HoverHandler{
-                onHoveredChanged: ()=>{
-                                      statusText.text=hovered?"Save clips to a new media file":""
-                                  }
-            }
+            HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}
         }
         Rectangle{
             id:_save1
@@ -266,27 +307,5 @@ Rectangle{
             }
         }
     }
-    // 状态栏
-    Rectangle{
-        id: rect5
-        color:"transparent"
-        width: rect1.width+rect2.width
-        height: _item.width*0.02
-        x:parent.width*0.01
-        anchors.top: _buttons2.bottom
 
-        Text{
-            id:statusText
-            text: ""
-            anchors.left: parent.left
-            font.pixelSize: 12
-            font.weight: Font.Thin
-        }
-    }
-    Dialogs{
-        id:_dialogs
-        openfile.onAccepted:{
-            Controller.setfilepath()
-        }
-    }
 }

@@ -12,13 +12,12 @@ Rectangle{
     property alias audioSource: _videoItem._audioSource
     property alias dialogs: _dialogs
 
-
+    color:"black"
 
     Dialogs{
         id: _dialogs
-        openfile.onAccepted: {
-            Controller.setfilepath()
-        }
+        property var mediaStartTime
+        openfile.onAccepted: {Controller.setfilepath()}
     }
 
     //选择文件前的背景图片
@@ -46,9 +45,11 @@ Rectangle{
     Item{
         id: _videoItem
         property url _audioSource// 文件路径
+        // _audioSource: "file:///root/tmp/Linux Directories Explained in 100 Seconds.mp4"
         anchors.fill: parent
         focus: true
         z:3
+        // on_AudioSourceChanged: {Controller.positiontime()}//为何此时还是0。如果用按钮来启动的话可以
 
         MediaPlayer{
             id: _player
@@ -63,7 +64,7 @@ Rectangle{
         }
 
 
-        Keys.enabled: true//没用
+        Keys.enabled: true
         Keys.onSpacePressed: {
             _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
             console.log("Space pressed!")
@@ -79,40 +80,12 @@ Rectangle{
 
 
         TapHandler{
-            onTapped: ()=>{_player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play(); }
+            onTapped: ()=>{
+                          _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
+                      }
         }
     }
 
-    Slider{
-        id:slider
-        width: parent.width
-        anchors.bottom: videoItem.bottom
-        from:0
-        to: player.duration
-        value: player.position
-        z:3
-
-        // property int times
-        Timer {
-            id: positionUpdateTimer
-            interval: 500//0.5s更新一次
-            repeat: true
-            running:true
-            onTriggered: {
-                player.setPosition(slider.value);
-                // console.log("timer once")
-            }
-        }
-        onValueChanged: {
-            if (!slider.dragging) {
-                return
-            }
-            else
-                // 更新实时位置，但是有顿感，这是由于Timer造成的
-                player.setPosition(slider.value)
-        }
-
-    }
     VideoEdit{
         id:videoEdit
     }
