@@ -227,7 +227,6 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
     QFile file("/root/Cut/AudioCutter/filepath.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Fail to open filepath.txt for reading";
-        return;
     }
     QTextStream stream(&file);
     while (!stream.atEnd()) {
@@ -240,6 +239,15 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
 
     // 构建 ffmpeg 命令
     QStringList arguments;
+    arguments << "-f"
+              << "concat"
+              << "-safe"
+              << "0"
+              << "-i"
+              << "/root/Cut/AudioCutter/filepath.txt"
+              << "-c"
+              << "copy"
+              << "-y" << dstPath + "/" + dstName; // 保存的路径
     // 开启 ffmpeg 运行的进程
     QProcess ffmpegProcess;
     ffmpegProcess.setProgram(ffmpegPath);
@@ -250,8 +258,11 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
     ffmpegProcess.waitForFinished();
 
     // 检查是否成功创建进程
-    if (ffmpegProcess.exitStatus() == QProcess::NormalExit && ffmpegProcess.exitCode() == 0)
+    if (ffmpegProcess.exitStatus() == QProcess::NormalExit && ffmpegProcess.exitCode() == 0) {
         qDebug() << "video merge successful";
-    else
+        // 发送信号
+        QString mergeFilePath = dstPath + "/" + dstName;
+        emit videoMergeCompleted(mergeFilePath);
+    } else
         qDebug() << "video merge failed" << ffmpegProcess.errorString();
 }

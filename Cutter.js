@@ -28,6 +28,7 @@ function endcutTriggered(){
 //保存剪辑文件
 function saveTriggered(){
     //todo
+    maincontent.dialogs.savefile.open()
 }
 
 

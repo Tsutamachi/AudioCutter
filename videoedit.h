@@ -2,7 +2,6 @@
 
 #include <QObject>
 #include <QQmlListProperty>
-#include <QUrl>
 #include <QtQml/qqmlregistration.h> // 注册C++类为QML类型
 #include <iostream>
 class VideoEdit : public QObject
@@ -21,16 +20,11 @@ public:
                  const double starttime,
                  const double endtime);
 
-    // 视频保存
-    void videoSave();
-
 public slots:
-
     void readPath(const QStringList *path); // 添加路径
     void videoMerge(QString dstName,
                     QString dstPath); // 视频合并 一个目标视频的名称，一个目标路径的名称
 
 signals:
-private:
-    QUrl url; // 路径
+    void videoMergeCompleted(QString mergeFilePath);
 };
