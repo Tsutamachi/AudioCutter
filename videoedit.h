@@ -14,16 +14,15 @@ class VideoEdit : public QObject
     // Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged FINAL)
 public:
     explicit VideoEdit(QObject *parent = nullptr);
-    //视频剪辑
-    int videocut(QString in_filename,
-                 QString out_filename,
-                 const double starttime,
-                 const double endtime);
 
 public slots:
     void readPath(const QStringList *path); // 添加路径
     void videoMerge(QString dstName,
                     QString dstPath); // 视频合并 一个目标视频的名称，一个目标路径的名称
+    int videocut(QString in_filename,
+                 QString out_filename,
+                 const double starttime,
+                 const double endtime); //视频剪辑
 
 signals:
     void videoMergeCompleted(QString mergeFilePath);
