@@ -13,6 +13,7 @@ Rectangle{
     property alias dialogs: _dialogs
     //mediaStartTime在dialogs下
 
+    color:"black"
 
     Dialogs{
         id: _dialogs
@@ -34,12 +35,6 @@ Rectangle{
         source: "file:///usr/share/wallpapers/stardust/20200601.jpg"
         anchors.fill: parent
         visible: true
-        TapHandler{
-            onTapped: {
-                player.play()
-                console.log("Content.Image:"+audioSource)
-            }
-        }
     }
 
 
@@ -54,12 +49,6 @@ Rectangle{
         MediaPlayer{
             id: _player
             source:audioSource
-            // metaData :data//Returns meta data for the current media used by the media player.
-
-            // MediaMetaData{
-            //     id:data
-            // }
-
             audioOutput: AudioOutput{}
             videoOutput:videoOutput
         }
@@ -70,7 +59,7 @@ Rectangle{
         }
 
 
-        Keys.enabled: true//没用
+        Keys.enabled: true
         Keys.onSpacePressed: {
             _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
             console.log("Space pressed!")
@@ -92,34 +81,4 @@ Rectangle{
         }
     }
 
-    // Slider{
-    //     id:slider
-    //     width: parent.width
-    //     anchors.bottom: videoItem.bottom
-    //     from:0
-    //     to: player.duration
-    //     value: player.position
-
-
-    //     // property int times
-    //     Timer {
-    //         id: positionUpdateTimer
-    //         interval: 500//0.5s更新一次
-    //         repeat: true
-    //         running:true
-    //         onTriggered: {
-    //             player.setPosition(slider.value);
-    //             // console.log("timer once")
-    //         }
-    //     }
-    //     onValueChanged: {
-    //         if (!slider.dragging) {
-    //             return
-    //         }
-    //         else
-    //             // 更新实时位置，但是有顿感，这是由于Timer造成的
-    //             player.setPosition(slider.value)
-    //     }
-
-    // }
 }
