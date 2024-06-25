@@ -30,6 +30,17 @@ int VideoEdit::videocut(QString in_filename,
                         const double starttime,
                         const double endtime)
 {
+    // //将输出路径名字转换为index.mp4,再将文件保存在QStringListview中
+    // // 查找最后一个点的位置
+    // std::string stdString = out_filename.toStdString(); //qstring->string
+    // size_t lastDotPos = stdString.find_last_of('.');
+    // // 提取文件扩展名
+    // std::string fileExtension = stdString.substr(lastDotPos + 1);
+    // out_filename = QString::number(index) + QString::fromStdString(fileExtension);
+    // index++;
+    // //将输出路径保存在QStringlist中
+    // storevideo.push_back(out_filename);
+
     QString ffmpegPath = "/usr/bin/ffmpeg"; // 设置FFmpeg可执行文件路径
     QStringList arguments;
     arguments << "-ss" << QString::number(starttime, 'f', 3) << "-i" << in_filename << "-t"
@@ -50,6 +61,7 @@ int VideoEdit::videocut(QString in_filename,
         //qDebug() << "FFmpeg进程执行失败.";
         return -1;
     }
+    return 0;
 }
 
 // 添加素材列表中要被合并的视频的路径，然后将他们写如到filepath.txt 文件中，用于视频的合并

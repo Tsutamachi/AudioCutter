@@ -22,6 +22,8 @@ function startcutTriggered(){
         _endcut.enable =true
 
         var now = maincontent.player.position
+        //var snow = siplifytime(now);
+        _startcut.startTime = now;
         console.log("startCuttingTime: "+ now)
         /*不需要这么做，把问题复杂化了还有bug
             var startTime =new Date(qmlData.getTime()).getTime()
@@ -40,6 +42,8 @@ function endcutTriggered(){
         _startcut.enable=true
 
         var now = maincontent.player.position
+        //var snow = siplifytime(now);
+        _endcut.endTime = now;
         console.log("endCuttingTime: "+ now)
         return now
     }
@@ -62,23 +66,26 @@ function setfileStartTime(){
 
 //小时:分钟:秒:毫秒的string格式
 //f最初是QML中的Date类型，return的结果是string类型
-function siplifytime(f){
-    // var holetime = maincontent.player.duration
-    var holetime = new Date(f.getTime())
-    var ms = parseInt(holetime%1000)
-    var totolsecond = parseInt(holetime/1000)
-    var second = totolsecond%60
-    var minit = parseInt(totolsecond/60)
-    var hour = parseInt(minit/60)
+// function siplifytime(f){
+//     // var holetime = maincontent.player.duration
+//     // var holetime = new Date(f.getTime())
+//     var ms = parseInt(holetime%1000)
+//     var totolsecond = parseInt(holetime/1000)
+//     var second = totolsecond%60
+//     var minit = parseInt(totolsecond/60)
+//     var hour = parseInt(minit/60)
 
-    f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(4,'0')
-    console.log(f)
-    return f
+//     f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(4,'0')
+//     console.log(f)
+//     return f
+// }
+
+
+
+function returnOpenfilePath(){
+    console.log(maincontent.audioSource)
+    return maincontent.audioSource;
 }
-
-
-
-
 
 //Content
 // 设置单文件路径
