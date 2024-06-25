@@ -6,6 +6,7 @@ import QtQuick
 import QtMultimedia
 import QtQuick.Controls
 import QtQuick.Layouts
+import se.qt.videoEditing
 
 Rectangle{
     id:_item
@@ -230,6 +231,9 @@ Rectangle{
             }
         }
         MyRadioButton{
+            property real startTime;//开始剪辑时间
+            property string path;
+            path:Controller.returnOpenfilePath()
             id: _startcut
             enable:true
             radius: _openfile.radius
@@ -257,14 +261,23 @@ Rectangle{
                 color: "grey"
             }
         }
+        //创建c++实体
+        VideoEdit{
+            id:myve;
+        }
         MyRadioButton{
+            property real endTime;//结束时间
             id: _endcut
             enable:false
             radius: _openfile.radius
             // anchors.margins: rect3.height
             imgSource: "file:///root/Cut/AudioCutter/icons/endclip.svg"
             anchors.left: _start1.right
-            TapHandler{onTapped: ()=>{Controller.endcutTriggered()}}
+            TapHandler{onTapped: ()=>{
+                                     Controller.endcutTriggered()
+                                     myve.videocut(_startcut.path,_startcut.path,_startcut.startTime/1000,_endcut.endTime/1000)
+                                 }
+            }
             HoverHandler{
                 onHoveredChanged: ()=>{
                                       if(_endcut.enable)
@@ -284,6 +297,8 @@ Rectangle{
                 color: "grey"
             }
         }
+
+
         MyRadioButton{
             id: _save
             radius: _openfile.radius
