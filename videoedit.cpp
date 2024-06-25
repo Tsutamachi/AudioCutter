@@ -138,3 +138,71 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
     } else
         qDebug() << "video merge failed" << ffmpegProcess.errorString();
 }
+
+//zy：
+//从文件(in_filepath)提取字幕流文件(out_filepath)
+//（如果视屏本身没有字幕流，则无法进行提取）
+void VideoEdit::getSubtitle(QString in_filepath, QString out_filepath)
+{
+    QProcess process;
+    QString ffmpegPath = "/usr/bin/ffmpeg"; // 添加 FFmpeg的执行文件
+
+    //ffmpeg -i inputFile.mp4 -map 0:s:0 output_subtitle.srt
+    QStringList arguments1;
+    arguments1 << "-i" << in_filepath << "-map"
+               << "0:s:0" << out_filepath;
+    qDebug() << arguments1;
+
+    // process.start(ffmpegPath, arguments1);//false
+    process.setProgram(ffmpegPath);
+    process.setArguments(arguments1);
+    process.start();
+
+    if (!process.waitForFinished()) {
+        qDebug() << "FFmpeg process failed to finish.";
+        qDebug() << "Error:" << process.error();
+        qDebug() << "Error string:" << process.errorString();
+        qDebug() << "Standard error output:" << process.readAllStandardError();
+    } else {
+        qDebug() << "Video conversion completed.";
+    }
+}
+
+//为文件(in_film)添加字幕(in_subtitle)，会生成一个新的视频文件(out_filmpath)
+void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_filmpath)
+{
+    QProcess process;
+    QString ffmpegPath = "/usr/bin/ffmpeg"; // 添加 FFmpeg的执行文件
+
+    QStringList arguments1;
+    arguments1 << "-i" << in_film << "-i" << in_subtitle << "-c:v"
+               << "libx264"
+               << "-c:a"
+               << "aac"
+               << "-c:s"
+               << "mov_text"
+               << "-map"
+               << "0:v"
+               << "-map"
+               << "0:a"
+               << "-map"
+               << "1"
+               << "-metadata:s:s:0"
+               << "language=eng"
+               << "-disposition:s:0"
+               << "default" << out_filmpath;
+    qDebug() << arguments1;
+
+    process.setProgram(ffmpegPath);
+    process.setArguments(arguments1);
+    process.start();
+
+    if (!process.waitForFinished()) {
+        qDebug() << "FFmpeg process failed to finish.";
+        qDebug() << "Error:" << process.error();
+        qDebug() << "Error string:" << process.errorString();
+        qDebug() << "Standard error output:" << process.readAllStandardError();
+    } else {
+        qDebug() << "Video conversion completed.";
+    }
+}
