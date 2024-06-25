@@ -41,6 +41,7 @@ function endcutTriggered(){
 
         var now = maincontent.player.position
         console.log("endCuttingTime: "+ now)
+        returnOpenfilePath()
         return now
     }
 }
@@ -96,3 +97,7 @@ function setfilepath(){
                      })
 }
 
+function returnOpenfilePath(){
+    console.log(maincontent.audioSource)
+    return maincontent.audioSource
+}
