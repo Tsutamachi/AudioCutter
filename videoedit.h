@@ -39,6 +39,7 @@ public slots:
 signals:
     void videoMergeCompleted(QString mergeFilePath);
     void finished();
+    void synfinished();
 
 private:
     QStringList storevideo;

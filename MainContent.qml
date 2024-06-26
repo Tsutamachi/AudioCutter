@@ -27,7 +27,7 @@ Rectangle{
 
         getSubtitle.onAccepted: {Controller.getsubtitle()}
 
-        addSubtitle.onAccepted: { Controller.addsubtitle() }
+        addSubtitle.onAccepted: { out_filepath = Controller.addsubtitle() }
     }
 
     //选择文件前的背景图片
@@ -98,5 +98,15 @@ Rectangle{
 
     VideoEdit{
         id:_videoEdit
+    }
+
+//对添加字幕文件后的视频文件进行自动播放
+    Connections{
+        target: _videoEdit
+        onSynfinished:{
+            maincontent.audioSource = out_filmpath
+            console.log("现在的播放路径： "+ out_filmpath)
+            maincontent.player.play()
+        }
     }
 }

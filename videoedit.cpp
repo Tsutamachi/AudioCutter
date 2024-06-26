@@ -233,4 +233,7 @@ void VideoEdit::addSubtitleAsync(const QString &in_film,
 
     // 开始线程
     thread->start();
+
+    //给QML端传送信号
+    connect(thread, &QThread::finished, [=]() { emit synfinished(); });
 }

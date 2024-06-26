@@ -327,21 +327,5 @@ Rectangle{
 
     }
 
-    // Rectangle{
-    //     anchors.left: _buttons2.right
-    //     anchors.leftMargin: 50
-    //     Menu{
-    //         title:qsTr("Subtitle")
-    //         MenuItem{
-    //             Action{
-    //                 id:_getsubtitle
-    //                 text:qsTr("get subtitle file")
-    //             }
-    //             Action{
-    //                 id:_addsubtitle
-    //                 text:qsTr("add subtitle file")
-    //             }
-    //         }
-    //     }
-    // }
+
 }
