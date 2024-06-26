@@ -55,6 +55,22 @@ function saveTriggered(){
     maincontent.dialogs.savefile.open()
 
 }
+// Controller.js
+// 移除裁剪的视频路径
+function removeTriggered(){
+    // to do
+    // 清空或重置所有视图项
+    // 有个小bug,就是调用readPath时，无法清除filepath.txt文件的内容，只会在后面追加为 file ''
+    _mainContent.videoEdit.readPath("");
+    if (_mainContent.videoEdit.videoPaths.length === 0) {
+      console.log("remove");
+    } else {
+      console.log("not remove");
+    }
+    // 刷新视图
+    listview.model =[];
+    // listview.model = _mainContent.videoEdit.videoPaths
+}
 
 
 

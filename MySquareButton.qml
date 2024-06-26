@@ -7,15 +7,17 @@ Rectangle{
     id:mySqBton
     required property string _text
     required property url _imgSource
+    property alias button: _button
     radius: 30
 
     Button{
         id:_button
         width: parent.width
         height: parent.height
-
         //按钮内容
         contentItem:Rectangle{
+            width: _button.width
+            height: _button.height
             color:"transparent"
             Image{
                 // source:"/root/add.svg"
@@ -41,7 +43,10 @@ Rectangle{
             radius:5
             color:_button.down?(Qt.darker("gray",1.5)):"gray"
         }
+        // onClicked: {
+        //     console.log("button is clicked")
+        // }
+        // Keys.forwardTo: mySqBton
     }
-
 }
 

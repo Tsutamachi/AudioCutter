@@ -1,16 +1,18 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/add.svg</file>
         <file>icons/endclip.svg</file>
         <file>icons/function-line.svg</file>
         <file>icons/play.svg</file>
         <file>icons/remove.svg</file>
         <file>icons/save.svg</file>
-        <file>icons/open.svg</file>
         <file>icons/pause.svg</file>
         <file>icons/setting.svg</file>
         <file>icons/startclip.svg</file>
         <file>PlayList.qml</file>
+        <file>icons/add.png</file>
+        <file>icons/open.png</file>
+        <file>icons/film.jpg</file>
+        <file>icons/finger.webp</file>
     </qresource>
     <qresource prefix="/file">
         <file>filepath.txt</file>

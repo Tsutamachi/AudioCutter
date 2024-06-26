@@ -4,6 +4,7 @@ import QtQuick
 import QtMultimedia
 import QtQuick.Controls
 import "Cutter.js" as Controller
+import se.qt.videoEditing
 
 Rectangle{
     property alias player: _player
@@ -11,6 +12,7 @@ Rectangle{
     property alias videoItem: _videoItem
     property alias audioSource: _videoItem._audioSource
     property alias dialogs: _dialogs
+    property alias videoEdit: _videoEdit
 
     color:"black"
 
@@ -87,6 +89,6 @@ Rectangle{
     }
 
     VideoEdit{
-        id:videoEdit
+        id:_videoEdit
     }
 }

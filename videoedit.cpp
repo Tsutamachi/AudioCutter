@@ -43,7 +43,11 @@ int VideoEdit::videocut(QString in_filename,
     out_filename = juedui + QString::number(index) + QString::fromStdString(fileExtension);
     index++;
     //将输出路径保存在QStringlist中
-    storevideo.push_back(out_filename);
+    // storevideo.push_back(out_filename);
+    storevideo.append(out_filename);
+    readPath(out_filename);
+    // 发送信息给QML
+    emit videoPathsChanged();
 
     QString ffmpegPath = "/usr/bin/ffmpeg"; // 设置FFmpeg可执行文件路径
     QStringList arguments;
@@ -70,7 +74,7 @@ int VideoEdit::videocut(QString in_filename,
 
 // 添加素材列表中要被合并的视频的路径，然后将他们写如到filepath.txt 文件中，用于视频的合并
 // to do 他需要接收clip的多个路径，没有与QML做交互，需要剪切后的路径
-void VideoEdit::readPath(const QStringList *paths)
+void VideoEdit::readPath(QString path)
 {
     // 写入文件
     QFile file;
@@ -79,9 +83,7 @@ void VideoEdit::readPath(const QStringList *paths)
                   | QIODevice::Append)) // 以追加路径方式读到文本里面
     {
         QTextStream stream(&file);
-        for (const QString &path : *paths) {
-            stream << "file '" << path << "'\n";
-        }
+        stream << "file '" << path << "'\n";
         file.close();
     }
 }
@@ -137,4 +139,9 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
         emit videoMergeCompleted(mergeFilePath);
     } else
         qDebug() << "video merge failed" << ffmpegProcess.errorString();
+}
+
+QStringList VideoEdit::videoPaths() const
+{
+    return storevideo;
 }

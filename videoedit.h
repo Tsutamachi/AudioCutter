@@ -1,5 +1,4 @@
 // #pragma once
-
 #include <QObject>
 #include <QQmlListProperty>
 #include <QtQml/qqmlregistration.h> // 注册C++类为QML类型
@@ -12,11 +11,14 @@ class VideoEdit : public QObject
 
     // to do
     // Q_PROPERTY(type name READ name WRITE setName NOTIFY nameChanged FINAL)
+    Q_PROPERTY(QStringList videoPaths READ videoPaths NOTIFY videoPathsChanged)
+
 public:
     explicit VideoEdit(QObject *parent = nullptr);
+    QStringList videoPaths() const;
 
 public slots:
-    void readPath(const QStringList *path); // 添加路径
+    void readPath(QString path); // 添加路径
     void videoMerge(QString dstName,
                     QString dstPath); // 视频合并 一个目标视频的名称，一个目标路径的名称
     int videocut(QString in_filename,
@@ -26,6 +28,7 @@ public slots:
 
 signals:
     void videoMergeCompleted(QString mergeFilePath);
+    void videoPathsChanged();
 
 private:
     QStringList storevideo;

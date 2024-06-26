@@ -6,7 +6,6 @@ import QtQuick
 import QtMultimedia
 import QtQuick.Controls
 import QtQuick.Layouts
-import se.qt.videoEditing
 
 Rectangle{
     id:_item
@@ -60,9 +59,39 @@ Rectangle{
                 Layout.fillWidth: true
 
                 ListMessage{
+                    id:listmsg
                     width:rect2.width
                     anchors.topMargin:10
                     anchors.top: rect2.top
+                    z:2
+                }
+                // 列表视图项
+                ListView{
+                    id:listview
+                    width: rect2.width
+                    height: (rect2.height-_add.height)
+                    anchors.top: listmsg.bottom
+                    anchors.bottom: _add.top
+
+                    // model: 5 // 规定一个列表包含5个项目
+                    model: _mainContent.videoEdit.videoPaths
+                    spacing: 2
+                    delegate: Rectangle{
+                        width: listview.width
+                        height: listview.height*0.194
+                        color: "transparent"
+                        Rectangle { // 容器矩形，用于添加边距
+                            width: parent.width - 6 // 减去左右边距
+                            height: parent.height - 6 // 减去上下边距
+                            anchors.centerIn: parent
+                            color: "red"
+                            // 放路径
+                            Text{
+                                // text: modelData
+                                text: "Chapter:" + (index+1)
+                            }
+                        }
+                    }
                 }
 
                 MySquareButton{
@@ -84,11 +113,16 @@ Rectangle{
                     width: _add.width
                     height: _add.width*0.3
                     _text: "REMOVE"
+                    focus: true
                     _imgSource:"qrc:/icons/remove.svg"
                     HoverHandler{
                         onHoveredChanged: ()=>{
                                               statusText.text=hovered?"Remove clips from your index":""
                                           }
+                    }
+                    button.onClicked: {
+                        Controller.removeTriggered()
+                        console.log("tapped")
                     }
                     anchors{
                         bottom: parent.bottom
@@ -181,8 +215,8 @@ Rectangle{
             id: _openfile
             enable:true
             radius: 35
-            imgSource: "file:///root/Cut/AudioCutter/icons/open.svg"
-            // imgSource: "qrc:/icons/open.svg"
+            // imgSource: "file:///root/Cut/AudioCutter/icons/open.svg"
+            imgSource: "qrc:/icons/open.svg"
             // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
@@ -261,10 +295,7 @@ Rectangle{
                 color: "grey"
             }
         }
-        //创建c++实体
-        VideoEdit{
-            id:myve;
-        }
+
         MyRadioButton{
             property real endTime;//结束时间
             id: _endcut
@@ -275,7 +306,7 @@ Rectangle{
             anchors.left: _start1.right
             TapHandler{onTapped: ()=>{
                                      Controller.endcutTriggered()
-                                     myve.videocut(_startcut.path,_startcut.path,_startcut.startTime/1000,_endcut.endTime/1000)
+                                     _mainContent.videoEdit.videocut(_startcut.path,_startcut.path,_startcut.startTime/1000,_endcut.endTime/1000)
                                  }
             }
             HoverHandler{

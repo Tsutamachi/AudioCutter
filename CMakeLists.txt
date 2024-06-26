@@ -36,6 +36,8 @@ qt_add_qml_module(
   SOURCES
   videoedit.h
   videoedit.cpp
+  RESOURCE_PREFIX
+  images.qrc
   RESOURCES
   images.qrc)
 
