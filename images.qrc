@@ -11,6 +11,7 @@
         <file>icons/setting.svg</file>
         <file>icons/startclip.svg</file>
         <file>PlayList.qml</file>
+        <file>Actions.qml</file>
     </qresource>
     <qresource prefix="/file">
         <file>filepath.txt</file>

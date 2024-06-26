@@ -230,6 +230,7 @@ Rectangle{
                 color: "grey"
             }
         }
+
         MyRadioButton{
             property real startTime;//开始剪辑时间
             property string path;
@@ -261,10 +262,8 @@ Rectangle{
                 color: "grey"
             }
         }
-        //创建c++实体
-        VideoEdit{
-            id:myve;
-        }
+
+
         MyRadioButton{
             property real endTime;//结束时间
             id: _endcut
@@ -298,7 +297,6 @@ Rectangle{
             }
         }
 
-
         MyRadioButton{
             id: _save
             radius: _openfile.radius
@@ -321,6 +319,29 @@ Rectangle{
                 color: "grey"
             }
         }
+
+        //创建c++实体
+        VideoEdit{
+            id:myve;
+        }
+
     }
 
+    // Rectangle{
+    //     anchors.left: _buttons2.right
+    //     anchors.leftMargin: 50
+    //     Menu{
+    //         title:qsTr("Subtitle")
+    //         MenuItem{
+    //             Action{
+    //                 id:_getsubtitle
+    //                 text:qsTr("get subtitle file")
+    //             }
+    //             Action{
+    //                 id:_addsubtitle
+    //                 text:qsTr("add subtitle file")
+    //             }
+    //         }
+    //     }
+    // }
 }

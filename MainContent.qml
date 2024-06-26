@@ -3,7 +3,9 @@
 import QtQuick
 import QtMultimedia
 import QtQuick.Controls
+import QtQuick.Layouts
 import "Cutter.js" as Controller
+import se.qt.videoEditing
 
 Rectangle{
     property alias player: _player
@@ -11,13 +13,21 @@ Rectangle{
     property alias videoItem: _videoItem
     property alias audioSource: _videoItem._audioSource
     property alias dialogs: _dialogs
+    property alias videoEdit: _videoEdit
 
     color:"black"
 
     Dialogs{
         id: _dialogs
-        property var mediaStartTime
+        // property var mediaStartTime
+
+        property string in_filepath: _startcut.path//audioSource.toString()
+        property string out_filepath
         openfile.onAccepted: {Controller.setfilepath()}
+
+        getSubtitle.onAccepted: {Controller.getsubtitle()}
+
+        addSubtitle.onAccepted: { Controller.addsubtitle() }
     }
 
     //选择文件前的背景图片
@@ -49,7 +59,6 @@ Rectangle{
         anchors.fill: parent
         focus: true
         z:3
-        // on_AudioSourceChanged: {Controller.positiontime()}//为何此时还是0。如果用按钮来启动的话可以
 
         MediaPlayer{
             id: _player
@@ -64,6 +73,7 @@ Rectangle{
         }
 
 
+        //在拖动进度条后，Keys相关操作会失效
         Keys.enabled: true
         Keys.onSpacePressed: {
             _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
@@ -87,6 +97,6 @@ Rectangle{
     }
 
     VideoEdit{
-        id:videoEdit
+        id:_videoEdit
     }
 }
