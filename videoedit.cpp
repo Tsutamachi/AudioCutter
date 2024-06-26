@@ -197,12 +197,40 @@ void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_fi
     process.setArguments(arguments1);
     process.start();
 
-    if (!process.waitForFinished()) {
+    //最长复制时间为10min.因此不能合并过长的视屏文件
+    if (!process.waitForFinished(600000)) {
         qDebug() << "FFmpeg process failed to finish.";
         qDebug() << "Error:" << process.error();
         qDebug() << "Error string:" << process.errorString();
         qDebug() << "Standard error output:" << process.readAllStandardError();
     } else {
         qDebug() << "Video conversion completed.";
+        emit finished();
     }
+}
+
+void VideoEdit::addSubtitleAsync(const QString &in_film,
+                                 const QString &in_subtitle,
+                                 const QString &out_filmpath)
+{
+    // 创建一个新的QThread对象
+    QThread *thread = new QThread();
+
+    // 创建一个新的VideoEdit对象
+    VideoEdit *worker = new VideoEdit();
+
+    // 将worker对象移动到新线程
+    worker->moveToThread(thread);
+
+    // 连接信号和槽
+    connect(thread, &QThread::started, worker, [worker, in_film, in_subtitle, out_filmpath]() {
+        worker->addSubtitle(in_film, in_subtitle, out_filmpath);
+    });
+
+    //用于删除子进程
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+    QMetaObject::invokeMethod(worker, &VideoEdit::deleteLater, Qt::QueuedConnection);
+
+    // 开始线程
+    thread->start();
 }

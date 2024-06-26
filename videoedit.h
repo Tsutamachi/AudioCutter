@@ -31,9 +31,14 @@ public slots:
         QString in_film,
         QString in_subtitle,
         QString out_filmpath); //为文件(in_film)添加字幕(in_subtitle)，会生成一个新的视频文件(out_filmpath)
+    void addSubtitleAsync(
+        const QString &in_film,
+        const QString &in_subtitle,
+        const QString &out_filmpath); //为添加字幕的操作设置一个独立的进程，防止软件系统假死
 
 signals:
     void videoMergeCompleted(QString mergeFilePath);
+    void finished();
 
 private:
     QStringList storevideo;

@@ -106,29 +106,22 @@ function returnOpenfilePath(){
 //void getSubtitle(QString in_filepath,QString out_filepath);
 function getsubtitle(){
     var in_filepath = maincontent.audioSource.toString()
-    // in_filepath = in_file.replace("file://", "")
-    // in_filepath = "/root/ffmpeg/test/perfectFile.mp4"
-    // console.log("in_filepath: "+in_filepath)
-
     var out_filepath =  dialogs.getSubtitle.selectedFile.toString() +".srt"//不加.srt就会失败————why？
-    // out_filepath = out_file.replace("file://", "")
-     // var out_filepath ="/root/123.srt"
-    // console.log("out_filepath: "+out_filepath)
 
     maincontent.videoEdit.getSubtitle( in_filepath , out_filepath)
 }
 
 //    void addSubtitle(QString in_film,QString in_subtitle,QString out_filmpath)
 function addsubtitle(){
-    var in_filepath = maincontent.audioSource.toString()
-    // console.log("in_filepath: "+in_filepath)
+    var in_filepath = maincontent.audioSource.toString();
+    console.log("in_filepath: "+in_filepath);
 
-    var in_subtitle = maincontent.dialogs.addSubtitle.selectedFile.toString()
-    console.log("in_subtitle: "+in_subtitle)
+    var in_subtitle = maincontent.dialogs.addSubtitle.selectedFile.toString();
+    console.log("in_subtitle: "+in_subtitle);
 
     // var out_filmpath = maincontent.dialogs.getNewPath.selectedFile.toString()
     // console.log("out_filmpath: "+out_filmpath)
 
     // maincontent.videoEdit.addSubtitle( in_filepath ,in_subtitle , out_filmpath)
-    maincontent.videoEdit.addSubtitle( in_filepath ,in_subtitle , "/root")
+    maincontent.videoEdit.addSubtitleAsync(in_filepath, in_subtitle, "/root/ffmpeg/test/new.mp4");
 }
