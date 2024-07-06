@@ -32,7 +32,6 @@ function startcutTriggered(){
             console.log("startCuttingTime: "+startCuttingTime)*/
         return now
     }
-
 }
 //剪辑终点的设置
 function endcutTriggered(){
@@ -83,26 +82,21 @@ function setfileStartTime(){
 
 //小时:分钟:秒:毫秒的string格式
 //f最初是QML中的Date类型，return的结果是string类型
-// function siplifytime(f){
-//     // var holetime = maincontent.player.duration
-//     // var holetime = new Date(f.getTime())
-//     var ms = parseInt(holetime%1000)
-//     var totolsecond = parseInt(holetime/1000)
-//     var second = totolsecond%60
-//     var minit = parseInt(totolsecond/60)
-//     var hour = parseInt(minit/60)
+function siplifytime(f){
+    // var holetime = maincontent.player.duration
+    var holetime = new Date(f.getTime())
+    var ms = parseInt(holetime%1000)
+    var totolsecond = parseInt(holetime/1000)
+    var second = totolsecond%60
+    var minit = parseInt(totolsecond/60)
+    var hour = parseInt(minit/60)
 
-//     f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(4,'0')
-//     console.log(f)
-//     return f
-// }
-
-
-
-function returnOpenfilePath(){
-    console.log(maincontent.audioSource)
-    return maincontent.audioSource;
+    f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(4,'0')
+    console.log(f)
+    return f
 }
+
+
 
 //Content
 // 设置单文件路径
@@ -121,6 +115,42 @@ function setfilepath(){
 }
 
 function returnOpenfilePath(){
-    console.log(maincontent.audioSource)
-    return maincontent.audioSource
+    return maincontent.audioSource.toString()
+}
+
+//void getSubtitle(QString in_filepath,QString out_filepath);
+function getsubtitle(){
+    var in_filepath = maincontent.audioSource.toString()
+    var out_filepath =  dialogs.getSubtitle.selectedFile.toString() +".srt"//不加.srt就会失败————why？
+
+    maincontent.videoEdit.getSubtitle( in_filepath , out_filepath)
+}
+
+//    void addSubtitle(QString in_film,QString in_subtitle,QString out_filmpath)
+function addsubtitle(){
+    var in_filepath = maincontent.audioSource.toString();
+    console.log("in_filepath: "+in_filepath);
+
+    var in_subtitle = maincontent.dialogs.addSubtitle.selectedFile.toString();
+    console.log("in_subtitle: "+in_subtitle);
+
+    maincontent.dialogs.addSubtitle.
+    accepted.connect(()=>{
+                         maincontent.dialogs.getNewPath.open()
+                     })
+
+    maincontent.dialogs.getNewPath.
+    accepted.connect( ()=>{
+                         var out_filmpath = maincontent.dialogs.getNewPath.selectedFile.toString()+".mp4"
+                         console.log("out_filmpath: "+out_filmpath)
+                         maincontent.videoEdit.addSubtitleAsync(in_filepath, in_subtitle, out_filmpath);
+                         //如果直接在这里更改视频源，那么就回因为上面代码是异步执行而产生问题
+                         return out_filmpath
+                     })
+    //同步写在了MainContent中
+    // onSynfinished:{
+    //     maincontent.audioSource = out_filmpath
+    //     console.log("现在的播放路径： "+ out_filmpath)
+    //     maincontent.player.play()
+    // }
 }

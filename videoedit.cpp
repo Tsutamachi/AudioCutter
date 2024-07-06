@@ -144,4 +144,102 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
 QStringList VideoEdit::videoPaths() const
 {
     return storevideo;
+
+} //zy：
+//从文件(in_filepath)提取字幕流文件(out_filepath)
+//（如果视屏本身没有字幕流，则无法进行提取）
+void VideoEdit::getSubtitle(QString in_filepath, QString out_filepath)
+{
+    QProcess process;
+    QString ffmpegPath = "/usr/bin/ffmpeg"; // 添加 FFmpeg的执行文件
+
+    //ffmpeg -i inputFile.mp4 -map 0:s:0 output_subtitle.srt
+    QStringList arguments1;
+    arguments1 << "-i" << in_filepath << "-map"
+               << "0:s:0" << out_filepath;
+    qDebug() << arguments1;
+
+    // process.start(ffmpegPath, arguments1);//false
+    process.setProgram(ffmpegPath);
+    process.setArguments(arguments1);
+    process.start();
+
+    if (!process.waitForFinished()) {
+        qDebug() << "FFmpeg process failed to finish.";
+        qDebug() << "Error:" << process.error();
+        qDebug() << "Error string:" << process.errorString();
+        qDebug() << "Standard error output:" << process.readAllStandardError();
+    } else {
+        qDebug() << "Video conversion completed.";
+    }
+}
+
+//为文件(in_film)添加字幕(in_subtitle)，会生成一个新的视频文件(out_filmpath)
+void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_filmpath)
+{
+    QProcess process;
+    QString ffmpegPath = "/usr/bin/ffmpeg"; // 添加 FFmpeg的执行文件
+
+    QStringList arguments1;
+    arguments1 << "-i" << in_film << "-i" << in_subtitle << "-c:v"
+               << "libx264"
+               << "-c:a"
+               << "aac"
+               << "-c:s"
+               << "mov_text"
+               << "-map"
+               << "0:v"
+               << "-map"
+               << "0:a"
+               << "-map"
+               << "1"
+               << "-metadata:s:s:0"
+               << "language=eng"
+               << "-disposition:s:0"
+               << "default" << out_filmpath;
+    qDebug() << arguments1;
+
+    process.setProgram(ffmpegPath);
+    process.setArguments(arguments1);
+    process.start();
+
+    //最长复制时间为10min.因此不能合并过长的视屏文件
+    if (!process.waitForFinished(600000)) {
+        qDebug() << "FFmpeg process failed to finish.";
+        qDebug() << "Error:" << process.error();
+        qDebug() << "Error string:" << process.errorString();
+        qDebug() << "Standard error output:" << process.readAllStandardError();
+    } else {
+        qDebug() << "Video conversion completed.";
+        emit finished();
+    }
+}
+
+void VideoEdit::addSubtitleAsync(const QString &in_film,
+                                 const QString &in_subtitle,
+                                 const QString &out_filmpath)
+{
+    // 创建一个新的QThread对象
+    QThread *thread = new QThread();
+
+    // 创建一个新的VideoEdit对象
+    VideoEdit *worker = new VideoEdit();
+
+    // 将worker对象移动到新线程
+    worker->moveToThread(thread);
+
+    // 连接信号和槽
+    connect(thread, &QThread::started, worker, [worker, in_film, in_subtitle, out_filmpath]() {
+        worker->addSubtitle(in_film, in_subtitle, out_filmpath);
+    });
+
+    //用于删除子进程
+    connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+    QMetaObject::invokeMethod(worker, &VideoEdit::deleteLater, Qt::QueuedConnection);
+
+    // 开始线程
+    thread->start();
+
+    //给QML端传送信号
+    connect(thread, &QThread::finished, [=]() { emit synfinished(); });
 }

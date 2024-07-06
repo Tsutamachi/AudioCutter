@@ -264,6 +264,7 @@ Rectangle{
                 color: "grey"
             }
         }
+
         MyRadioButton{
             property real startTime;//开始剪辑时间
             property string path;
@@ -329,7 +330,6 @@ Rectangle{
             }
         }
 
-
         MyRadioButton{
             id: _save
             radius: _openfile.radius
@@ -353,5 +353,6 @@ Rectangle{
             }
         }
     }
+
 
 }
