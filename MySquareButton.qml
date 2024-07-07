@@ -6,7 +6,7 @@ import QtQuick.Layouts
 Rectangle{
     id:mySqBton
     required property string _text
-    required property url _imgSource
+    property url _imgSource
     property alias button: _button
     radius: 30
 

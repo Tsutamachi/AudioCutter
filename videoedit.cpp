@@ -142,8 +142,8 @@ void VideoEdit::videoMerge(QString path)
 QStringList VideoEdit::videoPaths() const
 {
     return storevideo;
-
-} //zy：
+}
+//zy：
 //从文件(in_filepath)提取字幕流文件(out_filepath)
 //（如果视屏本身没有字幕流，则无法进行提取）
 void VideoEdit::getSubtitle(QString in_filepath, QString out_filepath)
@@ -176,7 +176,7 @@ void VideoEdit::remove()
 {
     QFile file("/root/Cut/AudioCutter/filepath.txt");
     if (!file.open(QIODevice::WriteOnly
-                   | QIODevice::Truncate)) // 打开文件之前截断文件内容，即清空文件
+                   | QIODevice::Truncate)) // 在打开文件之前截断文件内容，即清空文件
     {
         qDebug() << "Fail to open filepath.txt for reading";
         return;

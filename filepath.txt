@@ -1,0 +1,7 @@
+file 'file:///root/tmp/0.avi'
+file 'file:///root/tmp/0.mp4'
+file 'file:///root/tmp/1.mp4'
+file 'file:///root/tmp/2.mp4'
+file 'file:///root/tmp/0.avi'
+file 'file:///root/tmp/1.avi'
+file 'file:///root/tmp/2.avi'

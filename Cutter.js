@@ -54,18 +54,32 @@ function saveTriggered(){
     maincontent.dialogs.savefile.open()
 
 }
+
 // 移除裁剪的视频路径
 function removeTriggered(){
     // to do
     // 清空或重置所有视图项
     _mainContent.videoEdit.remove();
-    if (_mainContent.videoEdit.videoPaths.length === 0) {
-      console.log("remove");
-    } else {
-      console.log("not remove");
-    }
     // 刷新视图
-    listview.model =[];
+    listview.model = [];
+    // listview.forceLayout();
+    // listview.model=_mainContent.videoEdit.videoPaths;
+    if (_mainContent.videoEdit.videoPaths.length === 0) {
+        console.log("remove");
+    } else {
+        console.log("not remove");
+    }
+}
+
+// 加入裁剪的视频路径
+function addTriggered(){
+    listview.model = _mainContent.videoEdit.videoPaths;
+    listview.forceLayout();
+    if (_mainContent.videoEdit.videoPaths.length === 0) {
+        console.log("add");
+    } else {
+        console.log("not add");
+    }
 }
 
 

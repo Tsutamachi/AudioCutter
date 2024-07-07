@@ -27,7 +27,7 @@ Rectangle{
         Layout.fillWidth: true
         // color:"red"
 
-        //视屏显示
+        //视频显示
         Rectangle{
             id: rect1
             color: "black"
@@ -84,20 +84,39 @@ Rectangle{
                             width: parent.width - 6 // 减去左右边距
                             height: parent.height - 6 // 减去上下边距
                             anchors.centerIn: parent
-                            color: "red"
+                            color: "lightblue"
                             // 放路径
                             Text{
                                 // text: modelData
                                 text: "Chapter:" + (index+1)
+                                color: "white"
                             }
                         }
                     }
                 }
 
                 MySquareButton{
+                    id:_add
+                    width: rect2.width*0.45
+                    height: _add.width*0.3
+                    _imgSource:"qrc:/icons/add.png"
+                    _text:"ADD"
+                    HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""}}
+                    anchors{
+                        bottom: parent.bottom
+                        left: parent.left
+                        margins: 10
+                    }
+                    button.onClicked: {
+                        Controller.addTriggered()
+                        console.log("tapped")
+                    }
+                }
+
+                MySquareButton{
                     id:_remove
-                    width: listview.width*0.9
-                    height: listview.width*0.2
+                    width: _add.width
+                    height: _add.width*0.3
                     _text: "REMOVE"
                     focus: true
                     _imgSource:"qrc:/icons/remove.svg"
@@ -112,7 +131,7 @@ Rectangle{
                     }
                     anchors{
                         bottom: parent.bottom
-                        horizontalCenter: parent.horizontalCenter
+                        right: parent.right
                         margins: 10
                     }
                 }
@@ -138,7 +157,7 @@ Rectangle{
             id:background
             width: parent.width
             height: parent.height
-            source: "file:///root/Qt作业/大作业/cutter/icons/film.jpg"
+            source: "qrc:/icons/film.jpg"
             fillMode: Image.TileHorizontally
             // Repeater
         }
@@ -201,8 +220,8 @@ Rectangle{
             id: _openfile
             enable:true
             radius: 35
-            // imgSource: "file:///root/Cut/AudioCutter/icons/open.svg"
-            imgSource: "qrc:/icons/open.svg"
+            imgSource:  "qrc:/icons/open.png"
+            // imgSource:"file:///root/Cut/AudioCutter/icons/open.png"
             // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
@@ -225,10 +244,11 @@ Rectangle{
 
         MyRadioButton{
             id: _play
-            imgSource: _mainContent.player.playbackState === MediaPlayer.PlayingState?"file:///root/Cut/AudioCutter/icons/play.svg":"file:///root/Cut/AudioCutter/icons/pause.svg"
+            imgSource: _mainContent.player.playbackState === MediaPlayer.PlayingState?"qrc:/icons/play.svg":"qrc:/icons/pause.svg"
             enable:true
             radius: _openfile.radius
             // 定位问题，同下
+            // anchors.margins: rect3.height*1.5
             anchors.left: _open1.right
             TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
                                      _mainContent.player.playbackRate === MediaPlayer.PlayingState?_mainContent.player.pause():_mainContent.player.play()
@@ -257,7 +277,7 @@ Rectangle{
             id: _startcut
             enable:true
             radius: _openfile.radius
-            imgSource: "file:///root/Cut/AudioCutter/icons/startclip.svg"
+            imgSource: "qrc:/icons/startclip.svg"
             // anchors.margins: rect3.height
             anchors.left: _play1.right
             TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
@@ -287,7 +307,8 @@ Rectangle{
             id: _endcut
             enable:false
             radius: _openfile.radius
-            imgSource: "file:///root/Cut/AudioCutter/icons/endclip.svg"
+            // anchors.margins: rect3.height
+            imgSource: "qrc:/icons/endclip.svg"
             anchors.left: _start1.right
             TapHandler{onTapped: ()=>{
                                      Controller.endcutTriggered()
@@ -318,7 +339,8 @@ Rectangle{
             id: _save
             radius: _openfile.radius
             enable:true
-            imgSource: "file:///root/Cut/AudioCutter/icons/save.svg"
+            // anchors.margins:  rect3.height
+            imgSource: "qrc:/icons/save.png"
             anchors.left: _end1.right
             TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
             HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}
