@@ -95,23 +95,9 @@ Rectangle{
                 }
 
                 MySquareButton{
-                    id:_add
-                    width: rect2.width*0.45
-                    height: _add.width*0.3
-                    _imgSource:"qrc:/icons/add.svg"
-                    _text:"ADD"
-                    HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""}}
-                    anchors{
-                        bottom: parent.bottom
-                        left: parent.left
-                        margins: 10
-                    }
-                }
-
-                MySquareButton{
                     id:_remove
-                    width: _add.width
-                    height: _add.width*0.3
+                    width: listview.width*0.9
+                    height: listview.width*0.2
                     _text: "REMOVE"
                     focus: true
                     _imgSource:"qrc:/icons/remove.svg"
@@ -126,7 +112,7 @@ Rectangle{
                     }
                     anchors{
                         bottom: parent.bottom
-                        right: parent.right
+                        horizontalCenter: parent.horizontalCenter
                         margins: 10
                     }
                 }
@@ -243,7 +229,6 @@ Rectangle{
             enable:true
             radius: _openfile.radius
             // 定位问题，同下
-            // anchors.margins: rect3.height*1.5
             anchors.left: _open1.right
             TapHandler{onTapped: ()=>{//这里用player（MainContent中的组建）替换MediaPlayer会报错  Why？
                                      _mainContent.player.playbackRate === MediaPlayer.PlayingState?_mainContent.player.pause():_mainContent.player.play()
@@ -302,7 +287,6 @@ Rectangle{
             id: _endcut
             enable:false
             radius: _openfile.radius
-            // anchors.margins: rect3.height
             imgSource: "file:///root/Cut/AudioCutter/icons/endclip.svg"
             anchors.left: _start1.right
             TapHandler{onTapped: ()=>{
@@ -334,7 +318,6 @@ Rectangle{
             id: _save
             radius: _openfile.radius
             enable:true
-            // anchors.margins:  rect3.height
             imgSource: "file:///root/Cut/AudioCutter/icons/save.svg"
             anchors.left: _end1.right
             TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
