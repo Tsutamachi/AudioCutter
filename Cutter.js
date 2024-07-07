@@ -52,7 +52,20 @@ function endcutTriggered(){
 function saveTriggered(){
     //todo
     maincontent.dialogs.savefile.open()
+    maincontent.dialogs.savefile.accepted.connect( ()=>{
+                                                      var path =maincontent.dialogs.savefile.selectedFiles.toString()//获取文件的绝对路径
+                                                      console.log("hello"+path)
+                                                      maincontent.videoEdit.videoMerge(path)
 
+                                                  })
+
+    /*     maincontent.dialogs.openfile.
+accepted.connect(()=>{
+                         maincontent.audioSource = maincontent.dialogs.openfile.selectedFile
+                         console.log("Dialogs: "+maincontent.audioSource)
+                         maincontent.player.play()
+                         maincontent.bgimg.visible = false
+                     })*/
 }
 // Controller.js
 // 移除裁剪的视频路径

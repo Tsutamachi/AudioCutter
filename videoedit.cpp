@@ -43,8 +43,6 @@ int VideoEdit::videocut(QString in_filename,
     out_filename = juedui + QString::number(index) + QString::fromStdString(fileExtension);
     index++;
     //将输出路径保存在QStringlist中
-    // storevideo.push_back(out_filename);
-    storevideo.append(out_filename);
     readPath(out_filename);
     // 发送信息给QML
     emit videoPathsChanged();
@@ -78,7 +76,7 @@ void VideoEdit::readPath(QString path)
 {
     // 写入文件
     QFile file;
-    file.setFileName("/root/Cut/AudioCutter/filepath.txt");
+    file.setFileName("/root/filepath.txt");
     if (file.open(QIODevice::WriteOnly | QIODevice::Text
                   | QIODevice::Append)) // 以追加路径方式读到文本里面
     {
@@ -90,15 +88,15 @@ void VideoEdit::readPath(QString path)
 
 // 视频合并
 // 由于我是直接接收readPath 传递过来的路径，所以我直接打开filePath.txt就可以读取视频路径了
-void VideoEdit::videoMerge(QString dstName, QString dstPath)
+void VideoEdit::videoMerge(QString path)
 {
     //ffmpeg -f concat -safe 0 -i filepath.txt -c copy -y videoMerge.mp4‘
 
-    QString ffmpegPath = "usr/bin/ffmpeg";
+    QString ffmpegPath = "/usr/bin/ffmpeg";
 
     // 读取 filePath.txt 中的路径列表
     QStringList fileList;
-    QFile file("/root/Cut/AudioCutter/filepath.txt");
+    QFile file("/root/filepath.txt");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Fail to open filepath.txt for reading";
     }
@@ -118,10 +116,9 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
               << "-safe"
               << "0"
               << "-i"
-              << "/root/Cut/AudioCutter/filepath.txt"
+              << "/root/filepath.txt"
               << "-c"
-              << "copy"
-              << "-y" << dstPath + "/" + dstName; // 保存的路径
+              << "copy" << path; // 保存的路径
     // 开启 ffmpeg 运行的进程
     QProcess ffmpegProcess;
     ffmpegProcess.setProgram(ffmpegPath);
@@ -135,8 +132,8 @@ void VideoEdit::videoMerge(QString dstName, QString dstPath)
     if (ffmpegProcess.exitStatus() == QProcess::NormalExit && ffmpegProcess.exitCode() == 0) {
         qDebug() << "video merge successful";
         // 发送信号
-        QString mergeFilePath = dstPath + "/" + dstName;
-        emit videoMergeCompleted(mergeFilePath);
+        //QString mergeFilePath = dstPath + "/" + dstName;
+        // emit videoMergeCompleted(mergeFilePath);
     } else
         qDebug() << "video merge failed" << ffmpegProcess.errorString();
 }

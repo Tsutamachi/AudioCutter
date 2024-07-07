@@ -5,8 +5,7 @@ import QtQuick.Dialogs
 
 Item {
     property alias openfile: _openfile
-    // property alias savefile: _savefile
-    // property alias savefile: _savefile
+    property alias savefile: _savefile
     // property alias videoEdit: _videoEdit
     property alias getSubtitle: _getSubtitle
     property alias addSubtitle: _addSubtitle
@@ -21,20 +20,12 @@ Item {
         nameFilters: [ "Movie files (*.mp4 *.avi *.mkv)" ]
     }
 
-    // FileDialog{
-    //     id:_savefile
-    //     title: "Save file"
-    //     currentFolder: "/root"
-    //     fileMode: FileDialog.SaveFile
-
-    //     Component.onCompleted: {
-    //         _mainContent.videoEdit.videoMergeCompleted.connect(function(mergeFilePath){
-    //         _savefile.fileUrl = mergeFilePath  // 设置保存的文件路径
-    //             _savefile.open() // 打开文件保存的对话框
-    //         }
-    //             )
-    //     }
-    // }
+    FileDialog{
+        id:_savefile
+        title: "Save file"
+        currentFolder: "/root"
+        fileMode: FileDialog.SaveFile
+    }
 
     //获取提取出的字幕文件的保存路径
     FileDialog{

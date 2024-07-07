@@ -19,8 +19,7 @@ public:
 
 public slots:
     void readPath(QString path); // 添加路径
-    void videoMerge(QString dstName,
-                    QString dstPath); // 视频合并 一个目标视频的名称，一个目标路径的名称
+    void videoMerge(QString path); // 视频合并 一个目标视频的名称，一个目标路径的名称
 
     int videocut(QString in_filename,
                  QString out_filename,
@@ -39,7 +38,7 @@ public slots:
         const QString &out_filmpath); //为添加字幕的操作设置一个独立的进程，防止软件系统假死
 
 signals:
-    void videoMergeCompleted(QString mergeFilePath);
+    void videoMergeCompleted(QString mergeFilePath); //
     void videoPathsChanged();
     void finished();
     void synfinished();
