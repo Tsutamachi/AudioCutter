@@ -1,4 +1,3 @@
-
 // 可以qml中调用 VideoEdit 类了
 import QtQuick
 import QtQuick.Controls
