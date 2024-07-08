@@ -14,10 +14,10 @@ Rectangle {
     opacity: 0.5
 
     required property bool enable//用于做剪辑开始、结束的同步
-    property var imgSource
+    property url imgSource
     Image {
         id: _img
-        // source:imgSource
+        source:imgSource
         // source: "file:///root/Cutter/AudioCutter/icons/open.svg"
         fillMode: Image.PreserveAspectFit
         anchors.fill: parent

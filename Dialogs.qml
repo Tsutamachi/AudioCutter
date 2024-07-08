@@ -6,7 +6,6 @@ import QtQuick.Dialogs
 Item {
     property alias openfile: _openfile
     property alias savefile: _savefile
-    // property alias videoEdit: _videoEdit
     property alias getSubtitle: _getSubtitle
     property alias addSubtitle: _addSubtitle
     property alias getNewPath: _getNewPath

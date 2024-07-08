@@ -6,6 +6,8 @@ project(
   LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
+# 使用资源文件必需的
+set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(
@@ -13,7 +15,7 @@ find_package(
   COMPONENTS Quick
   REQUIRED)
 
-qt_add_executable(appCutter main.cpp)
+qt_add_executable(appCutter images.qrc main.cpp)
 
 qt_add_qml_module(
   appCutter
@@ -37,11 +39,9 @@ qt_add_qml_module(
   SOURCES
   videoedit.h
   videoedit.cpp
-  RESOURCE_PREFIX
-  images.qrc
   RESOURCES
   images.qrc
-  SOURCES  )
+  SOURCES)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1. If
 # you are developing for iOS or macOS you should consider setting an explicit,

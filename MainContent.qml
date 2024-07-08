@@ -33,7 +33,7 @@ Rectangle{
     //选择文件前的背景图片
     Image{
         id:_bgimg
-        source: "file:///usr/share/wallpapers/stardust/20200601.jpg"
+        source: "qrc:/icons/bg.png"
         anchors.fill: parent
         visible: true
         z:2

@@ -27,7 +27,7 @@ Rectangle{
         Layout.fillWidth: true
         // color:"red"
 
-        //视屏显示
+        //视频显示
         Rectangle{
             id: rect1
             color: "black"
@@ -84,11 +84,12 @@ Rectangle{
                             width: parent.width - 6 // 减去左右边距
                             height: parent.height - 6 // 减去上下边距
                             anchors.centerIn: parent
-                            color: "red"
+                            color: "lightblue"
                             // 放路径
                             Text{
                                 // text: modelData
                                 text: "Chapter:" + (index+1)
+                                color: "white"
                             }
                         }
                     }
@@ -98,13 +99,17 @@ Rectangle{
                     id:_add
                     width: rect2.width*0.45
                     height: _add.width*0.3
-                    _imgSource:"qrc:/icons/add.svg"
+                    _imgSource:"qrc:/icons/add.png"
                     _text:"ADD"
                     HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Add one or more files to an existing project or an empty list if you are only joining files":""}}
                     anchors{
                         bottom: parent.bottom
                         left: parent.left
                         margins: 10
+                    }
+                    button.onClicked: {
+                        Controller.addTriggered()
+                        console.log("tapped")
                     }
                 }
 
@@ -152,7 +157,7 @@ Rectangle{
             id:background
             width: parent.width
             height: parent.height
-            source: "file:///root/Qt作业/大作业/cutter/icons/film.jpg"
+            source: "qrc:/icons/film.jpg"
             fillMode: Image.TileHorizontally
             // Repeater
         }
@@ -215,8 +220,8 @@ Rectangle{
             id: _openfile
             enable:true
             radius: 35
-            // imgSource: "file:///root/Cut/AudioCutter/icons/open.svg"
-            imgSource: "qrc:/icons/open.svg"
+            imgSource:  "qrc:/icons/open.png"
+            // imgSource:"file:///root/Cut/AudioCutter/icons/open.png"
             // 定位需要修改！！！
             anchors.left: _buttons2.left
             TapHandler{onTapped: ()=>{Controller.openfileTriggered()}}
@@ -239,7 +244,7 @@ Rectangle{
 
         MyRadioButton{
             id: _play
-            imgSource: _mainContent.player.playbackState === MediaPlayer.PlayingState?"file:///root/Cut/AudioCutter/icons/play.svg":"file:///root/Cut/AudioCutter/icons/pause.svg"
+            imgSource: _mainContent.player.playbackState === MediaPlayer.PlayingState?"qrc:/icons/play.svg":"qrc:/icons/pause.svg"
             enable:true
             radius: _openfile.radius
             // 定位问题，同下
@@ -272,7 +277,7 @@ Rectangle{
             id: _startcut
             enable:true
             radius: _openfile.radius
-            imgSource: "file:///root/Cut/AudioCutter/icons/startclip.svg"
+            imgSource: "qrc:/icons/startclip.svg"
             // anchors.margins: rect3.height
             anchors.left: _play1.right
             TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
@@ -303,7 +308,7 @@ Rectangle{
             enable:false
             radius: _openfile.radius
             // anchors.margins: rect3.height
-            imgSource: "file:///root/Cut/AudioCutter/icons/endclip.svg"
+            imgSource: "qrc:/icons/endclip.svg"
             anchors.left: _start1.right
             TapHandler{onTapped: ()=>{
                                      Controller.endcutTriggered()
@@ -335,7 +340,7 @@ Rectangle{
             radius: _openfile.radius
             enable:true
             // anchors.margins:  rect3.height
-            imgSource: "file:///root/Cut/AudioCutter/icons/save.svg"
+            imgSource: "qrc:/icons/save.png"
             anchors.left: _end1.right
             TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
             HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}

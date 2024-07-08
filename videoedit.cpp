@@ -6,6 +6,15 @@
 #include <QTextStream>
 #include <QtCore>
 #include <QtWidgets/QMessageBox>
+#include <QProcess>
+
+extern "C" {
+#include <libavcodec/avcodec.h>
+#include <libavformat/avformat.h>
+#include <libavutil/timestamp.h> //用于时间戳的操作
+#include <libswscale/swscale.h>
+}
+
 VideoEdit::VideoEdit(QObject *parent)
     : QObject{parent}
 {}
@@ -46,6 +55,7 @@ int VideoEdit::videocut(QString in_filename,
     out_filename = newFolderPath + "/" + QString::number(index)
                    + QString::fromStdString(fileExtension);
     index++;
+    storevideo.append(out_filename);
     //将输出路径保存在QStringlist中
     readPath(out_filename);
     // 发送信息给QML
@@ -74,7 +84,6 @@ int VideoEdit::videocut(QString in_filename,
 }
 
 // 添加素材列表中要被合并的视频的路径，然后将他们写如到filepath.txt 文件中，用于视频的合并
-// to do 他需要接收clip的多个路径，没有与QML做交互，需要剪切后的路径
 void VideoEdit::readPath(QString path)
 {
     QString finalpath = QDir::currentPath() + "/temp/filepath.txt";
@@ -101,9 +110,10 @@ void VideoEdit::readPath(QString path)
 // 由于我是直接接收readPath 传递过来的路径，所以我直接打开filePath.txt就可以读取视频路径了
 void VideoEdit::videoMerge(QString path)
 {
-    //ffmpeg -f concat -safe 0 -i filepath.txt -c copy -y videoMerge.mp4‘
+    //ffmpeg -f concat -safe 0 -i filepath.txt -c copy  videoMerge.mp4‘
     //filepath.txt的绝对路径
     QString finalpath = QDir::currentPath() + "/temp/filepath.txt";
+    //ffmpeg -f concat -safe 0 -i filepath.txt -c copy videoMerge.mp4‘
 
     QString ffmpegPath = "/usr/bin/ffmpeg";
 
@@ -148,12 +158,11 @@ void VideoEdit::videoMerge(QString path)
     } else
         qDebug() << "video merge failed" << ffmpegProcess.errorString();
 }
-
 QStringList VideoEdit::videoPaths() const
 {
     return storevideo;
-
-} //zy：
+}
+//zy：
 //从文件(in_filepath)提取字幕流文件(out_filepath)
 //（如果视屏本身没有字幕流，则无法进行提取）
 void VideoEdit::getSubtitle(QString in_filepath, QString out_filepath)
@@ -180,6 +189,20 @@ void VideoEdit::getSubtitle(QString in_filepath, QString out_filepath)
     } else {
         qDebug() << "Video conversion completed.";
     }
+}
+
+void VideoEdit::remove()
+{
+    QFile file("/root/Cut/AudioCutter/filepath.txt");
+    if (!file.open(QIODevice::WriteOnly
+                   | QIODevice::Truncate)) // 在打开文件之前截断文件内容，即清空文件
+    {
+        qDebug() << "Fail to open filepath.txt for reading";
+        return;
+    }
+    qDebug() << "File filepath.txt opened successfully for writing";
+    file.close();
+    qDebug() << "File filepath.txt closed successfully";
 }
 
 //为文件(in_film)添加字幕(in_subtitle)，会生成一个新的视频文件(out_filmpath)
