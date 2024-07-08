@@ -11,6 +11,8 @@ function removeButton(){
 
 //打开文件的组建调用
 function openfileTriggered() {
+    actions.getsubtitle.enable = true
+    actions.addsubtitle.enable = true
     maincontent.dialogs.openfile.open();
 }
 
