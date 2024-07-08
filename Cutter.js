@@ -58,14 +58,6 @@ function saveTriggered(){
                                                       maincontent.videoEdit.videoMerge(path)
 
                                                   })
-
-    /*     maincontent.dialogs.openfile.
-accepted.connect(()=>{
-                         maincontent.audioSource = maincontent.dialogs.openfile.selectedFile
-                         console.log("Dialogs: "+maincontent.audioSource)
-                         maincontent.player.play()
-                         maincontent.bgimg.visible = false
-                     })*/
 }
 // Controller.js
 // 移除裁剪的视频路径

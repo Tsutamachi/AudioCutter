@@ -5,14 +5,7 @@
 #include <QProcess>
 #include <QTextStream>
 #include <QtCore>
-#include <QProcess>
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-#include <libavutil/timestamp.h> //用于时间戳的操作
-#include <libswscale/swscale.h>
-}
-
+#include <QtWidgets/QMessageBox>
 VideoEdit::VideoEdit(QObject *parent)
     : QObject{parent}
 {}
@@ -24,12 +17,22 @@ std::string doubleToString(double num)
     std::string result = str;
     return result;
 }
-
+//将截取的视频放在/root/cutter/build/Desktop_Qt_6_7_1-Debug/temp目录下面
 int VideoEdit::videocut(QString in_filename,
                         QString out_filename,
                         const double starttime,
                         const double endtime)
 {
+    //获取当前目录路径
+    QString currentPath = QDir::currentPath();
+    //定义新文件夹的名字
+    QString newFolderName = "temp";
+    //创建文件夹的完整路径
+    QString newFolderPath = currentPath + '/' + newFolderName;
+    //创建文件夹，如果文件夹不存在
+    QDir().mkdir(newFolderPath);
+
+    qDebug() << "currentpath:" + currentPath;
     //将输出路径名字转换为index.mp4,再将文件保存在QStringListview中
     // 查找最后一个点的位置
     std::string stdString = out_filename.toStdString(); //qstring->string
@@ -40,7 +43,8 @@ int VideoEdit::videocut(QString in_filename,
     int lastIndex = out_filename.lastIndexOf('/');
     QString juedui = out_filename.left(lastIndex + 1);
     //文件名+扩展名
-    out_filename = juedui + QString::number(index) + QString::fromStdString(fileExtension);
+    out_filename = newFolderPath + "/" + QString::number(index)
+                   + QString::fromStdString(fileExtension);
     index++;
     //将输出路径保存在QStringlist中
     readPath(out_filename);
@@ -56,15 +60,14 @@ int VideoEdit::videocut(QString in_filename,
     QProcess *proc = new QProcess;
     proc->setProgram(ffmpegPath);  //可执行路径
     proc->setArguments(arguments); //命令
-
-    //qDebug() << "开始执行FFmpeg进程...";
+    // qDebug() << "开始执行FFmpeg进程...";
     proc->start();
     if (!proc->waitForStarted()) {
-        //qDebug() << "无法启动FFmpeg进程.";
+        // qDebug() << "无法启动FFmpeg进程.";
         return -1;
     }
     if (!proc->waitForFinished(-1)) {
-        //qDebug() << "FFmpeg进程执行失败.";
+        // qDebug() << "FFmpeg进程执行失败.";
         return -1;
     }
     return 0;
@@ -74,9 +77,17 @@ int VideoEdit::videocut(QString in_filename,
 // to do 他需要接收clip的多个路径，没有与QML做交互，需要剪切后的路径
 void VideoEdit::readPath(QString path)
 {
-    // 写入文件
-    QFile file;
-    file.setFileName("/root/filepath.txt");
+    QString finalpath = QDir::currentPath() + "/temp/filepath.txt";
+    QFile file(finalpath);
+    //检查文件是否存在，如果不存在则创建
+    if (!file.exists()) {
+        //创建文件
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "cannot create file";
+            return;
+        }
+        file.close();
+    }
     if (file.open(QIODevice::WriteOnly | QIODevice::Text
                   | QIODevice::Append)) // 以追加路径方式读到文本里面
     {
@@ -91,12 +102,14 @@ void VideoEdit::readPath(QString path)
 void VideoEdit::videoMerge(QString path)
 {
     //ffmpeg -f concat -safe 0 -i filepath.txt -c copy -y videoMerge.mp4‘
+    //filepath.txt的绝对路径
+    QString finalpath = QDir::currentPath() + "/temp/filepath.txt";
 
     QString ffmpegPath = "/usr/bin/ffmpeg";
 
     // 读取 filePath.txt 中的路径列表
     QStringList fileList;
-    QFile file("/root/filepath.txt");
+    QFile file(finalpath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Fail to open filepath.txt for reading";
     }
@@ -115,9 +128,7 @@ void VideoEdit::videoMerge(QString path)
               << "concat"
               << "-safe"
               << "0"
-              << "-i"
-              << "/root/filepath.txt"
-              << "-c"
+              << "-i" << finalpath << "-c"
               << "copy" << path; // 保存的路径
     // 开启 ffmpeg 运行的进程
     QProcess ffmpegProcess;
@@ -239,4 +250,12 @@ void VideoEdit::addSubtitleAsync(const QString &in_film,
 
     //给QML端传送信号
     connect(thread, &QThread::finished, [=]() { emit synfinished(); });
+}
+void VideoEdit::deleteDirectory()
+{
+    QString finalpath = QDir::currentPath() + "/temp";
+    QDir dir(finalpath);
+    if (dir.exists()) {
+        dir.removeRecursively();
+    }
 }

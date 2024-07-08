@@ -22,7 +22,7 @@ Item {
 
     FileDialog{
         id:_savefile
-        title: "Save file"
+        title: "save have merged file"
         currentFolder: "/root"
         fileMode: FileDialog.SaveFile
     }

@@ -6,7 +6,6 @@ import QtQuick.Layouts
 import se.qt.videoEditing
 
 ApplicationWindow {
-
     id:app
     // width: 1100
     // height: 900
@@ -53,6 +52,13 @@ ApplicationWindow {
             anchors.left: parent.left
             font.pixelSize: 12
             font.weight: Font.Thin
+        }
+    }
+
+    Connections{
+        target: app
+        onClosing:{
+           content.maincontent.videoEdit.deleteDirectory()
         }
     }
 }

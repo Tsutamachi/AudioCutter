@@ -16,8 +16,8 @@ class VideoEdit : public QObject
 public:
     explicit VideoEdit(QObject *parent = nullptr);
     QStringList videoPaths() const;
-
 public slots:
+    void deleteDirectory();
     void readPath(QString path); // 添加路径
     void videoMerge(QString path); // 视频合并 一个目标视频的名称，一个目标路径的名称
 
