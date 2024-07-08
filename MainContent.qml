@@ -102,10 +102,10 @@ Rectangle{
 
 //对添加字幕文件后的视频文件进行自动播放
     Connections{
-        target: _videoEdit
-        onSynfinished:{
-            maincontent.audioSource = out_filmpath
-            console.log("现在的播放路径： "+ out_filmpath)
+        target: _videoEdit//监听_videoEdit的信号
+        function onSynfinished(audioSource){
+            maincontent.audioSource = dialogs.out_filepath
+            console.log("现在的播放路径： "+ dialogs.out_filepath)
             maincontent.player.play()
         }
     }

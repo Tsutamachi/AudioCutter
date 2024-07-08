@@ -1,4 +1,3 @@
-
 // 可以qml中调用 VideoEdit 类了
 import QtQuick
 import QtQuick.Controls
@@ -15,22 +14,30 @@ ApplicationWindow {
     minimumWidth: 920
     visible: true
     property alias footerText: statusText.text
+    property alias actions: actions
 
     menuBar: MenuBar
     {
         Menu{
             title: qsTr("Subtitle")
-            MenuItem{ action: actions.getsubtitle}
+            MenuItem{
+                action: actions.getsubtitle
+                // color: actions.getsubtitle.enabled? balck: grey
+            }
             MenuItem{ action: actions.addsubtitle}
         }
     }
 
     Actions{
         id:actions
-        getsubtitle.onTriggered:content.maincontent.dialogs.getSubtitle.open()
+        getsubtitle.onTriggered:{
+            if(actions.getsubtitle.enable)
+                content.maincontent.dialogs.getSubtitle.open()
+        }
+
         addsubtitle.onTriggered:{
-            content.maincontent.dialogs.addSubtitle.open()
-            // content.maincontent.dialogs.getNewPath.open()
+            if(actions.addsubtitle.enable)
+                content.maincontent.dialogs.addSubtitle.open()
         }
     }
 

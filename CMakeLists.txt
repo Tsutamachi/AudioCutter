@@ -32,7 +32,7 @@ qt_add_qml_module(
   MySquareButton.qml
   MyRadioButton.qml
   MainContent.qml
-  ListMessage.qml
+
   Dialogs.qml
   Cutter.js
   Content.qml

@@ -58,12 +58,31 @@ Rectangle{
                 Layout.fillHeight: true
                 Layout.fillWidth: true
 
-                ListMessage{
+                Button{
                     id:listmsg
+                    opacity:0.5
+
+                    //设置按钮的内容为一个文本内容
+                    contentItem:Text{
+                        text:qsTr("素材列表")
+                        color:"black"
+                        font.family: "雅黑"
+                        font.pixelSize:23
+                        font.weight: Font.Thin
+                        //设置字体居中
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
+                    background:Rectangle{
+                        radius: 5
+                        //使用Qt.darker()根据颜色计算一个更暗的颜色
+                        color:listmsg.hovered?Qt.darker("gray",1.5):"gray"
+                        z:2
+                    }
                     width:rect2.width
                     anchors.topMargin:10
                     anchors.top: rect2.top
-                    z:2
+                    z:1
                 }
                 // 列表视图项
                 ListView{
@@ -280,7 +299,8 @@ Rectangle{
             imgSource: "qrc:/icons/startclip.svg"
             // anchors.margins: rect3.height
             anchors.left: _play1.right
-            TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
+            TapHandler{
+                onTapped: ()=>{Controller.startcutTriggered()}}
 
             HoverHandler{
                 onHoveredChanged: ()=>{
@@ -342,7 +362,7 @@ Rectangle{
             // anchors.margins:  rect3.height
             imgSource: "qrc:/icons/save.png"
             anchors.left: _end1.right
-            TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
+            TapHandler{onTapped: ()=>{Controller.saveTri2ggered()}}
             HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}
         }
         Rectangle{
