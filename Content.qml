@@ -362,7 +362,7 @@ Rectangle{
             // anchors.margins:  rect3.height
             imgSource: "qrc:/icons/save.png"
             anchors.left: _end1.right
-            TapHandler{onTapped: ()=>{Controller.saveTri2ggered()}}
+            TapHandler{onTapped: ()=>{Controller.saveTriggered()}}
             HoverHandler{onHoveredChanged: ()=>{footerText=hovered?"Save clips to a new media file":""}}
         }
         Rectangle{
