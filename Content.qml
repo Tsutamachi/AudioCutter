@@ -294,7 +294,8 @@ Rectangle{
             imgSource: "file:///root/Cut/AudioCutter/icons/startclip.svg"
             // anchors.margins: rect3.height
             anchors.left: _play1.right
-            TapHandler{onTapped: ()=>{Controller.startcutTriggered()}}
+            TapHandler{
+                onTapped: ()=>{Controller.startcutTriggered()}}
 
             HoverHandler{
                 onHoveredChanged: ()=>{
