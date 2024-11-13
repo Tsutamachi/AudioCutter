@@ -242,7 +242,8 @@ void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_fi
         qDebug() << "Standard error output:" << process.readAllStandardError();
     } else {
         qDebug() << "Video conversion completed.";
-        emit finished();
+        qDebug() << "Sending finished signal with out_filmpath: " << out_filmpath;
+        emit finished(out_filmpath);
     }
 }
 
@@ -268,11 +269,12 @@ void VideoEdit::addSubtitleAsync(const QString &in_film,
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
     QMetaObject::invokeMethod(worker, &VideoEdit::deleteLater, Qt::QueuedConnection);
 
-    // 开始线程
-    thread->start();
 
     //给QML端传送信号
-    connect(thread, &QThread::finished, [=]() { emit synfinished(); });
+    connect(thread, &QThread::finished, [=]() { emit synfinished(out_filmpath); });
+
+    // 开始线程
+    thread->start();
 }
 void VideoEdit::deleteDirectory()
 {

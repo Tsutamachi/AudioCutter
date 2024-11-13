@@ -171,6 +171,21 @@ Rectangle{
         anchors.top: main.bottom
         x:parent.width*0.01
 
+        Text {
+            id: showTime
+            z:1
+            anchors.top: rect3.top
+            anchors.topMargin: 25
+            anchors.left: rect3.left
+            anchors.leftMargin: 10
+            color: "black"
+
+            // //转化成秒为单位
+            property string positionNow :Controller.positionNow()
+            property string durationNow :Controller.durationNow()
+            text: qsTr(durationNow+" "+positionNow)
+        }
+
         //进度条背景
         Image{
             id:background
@@ -193,7 +208,7 @@ Rectangle{
 
             Timer {
                 id: positionUpdateTimer
-                interval: 500//0.5s更新一次
+                interval: 200//0.5s更新一次
                 repeat: true
                 running:true
                 onTriggered: { maincontent.player.setPosition(slider.value);}
@@ -213,14 +228,14 @@ Rectangle{
             }
         }
         //进度指示针//位置有问题
-        Rectangle{
-            id:finger
-            width: 5
-            color:"black"
-            height:rect3.height+5
-            z:1
-            x: slider.value
-        }
+        // Rectangle{
+        //     id:finger
+        //     width: 5
+        //     color:"black"
+        //     height:rect3.height+5
+        //     z:1
+        //     x: slider.value
+        // }
     }
 
     //Button

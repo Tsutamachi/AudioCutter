@@ -15,6 +15,8 @@ ApplicationWindow {
     visible: true
     property alias footerText: statusText.text
     property alias actions: actions
+    property alias messagebox: _messagebox
+    // property alias app:app
 
     menuBar: MenuBar
     {
@@ -28,16 +30,24 @@ ApplicationWindow {
         }
     }
 
+    MessageBox{
+        id:_messagebox
+    }
     Actions{
         id:actions
         getsubtitle.onTriggered:{
             if(actions.getsubtitle.enable)
                 content.maincontent.dialogs.getSubtitle.open()
+            else
+                messagebox.messageDialog1.open()
+
         }
 
         addsubtitle.onTriggered:{
             if(actions.addsubtitle.enable)
                 content.maincontent.dialogs.addSubtitle.open()
+            else
+                messagebox.messageDialog2.open()
         }
     }
 

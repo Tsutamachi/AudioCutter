@@ -6,7 +6,6 @@ function removeButton(){
     console.log("REMOVE triggered")
 }
 
-
 //Buttons
 
 //打开文件的组建调用
@@ -98,22 +97,30 @@ function setfileStartTime(){
     return t;
 }
 
-//小时:分钟:秒:毫秒的string格式
+//小时:分钟:秒:毫秒的string格式(regExp不好用)
 //f最初是QML中的Date类型，return的结果是string类型
-function siplifytime(f){
+function siplifytime(holetime){
     // var holetime = maincontent.player.duration
-    var holetime = new Date(f.getTime())
     var ms = parseInt(holetime%1000)
     var totolsecond = parseInt(holetime/1000)
     var second = totolsecond%60
     var minit = parseInt(totolsecond/60)
     var hour = parseInt(minit/60)
 
-    f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(4,'0')
-    console.log(f)
+    let f = hour.toString().padStart(2,'0') + ":"+ minit.toString().padStart(2,'0') + ":" + second.toString().padStart(2,'0') + ":" + ms.toString().padStart(3,'0')
+    // console.log(f)
     return f
 }
 
+function positionNow(){
+    var javatime = maincontent.player.position
+    return siplifytime(javatime)
+}
+
+function durationNow(){
+    var javatime = maincontent.player.duration
+    return siplifytime(javatime)
+}
 
 
 //Content

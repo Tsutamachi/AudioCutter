@@ -43,14 +43,13 @@ Rectangle{
                 console.log("Content.Image:"+audioSource)
             }
         }
-
-    }
-    Rectangle{
-        anchors.fill: parent
-        z:1
-        color: "black"
     }
 
+    // Rectangle{
+    //     anchors.fill: parent
+    //     z:1
+    //     color: "black"
+    // }
 
     Item{
         id: _videoItem
@@ -66,6 +65,7 @@ Rectangle{
             audioOutput: AudioOutput{}
             videoOutput:videoOutput
         }
+
         VideoOutput{
             id: videoOutput;
             anchors.fill: parent
@@ -88,7 +88,6 @@ Rectangle{
             console.log("Space pressed!")
         }
 
-
         TapHandler{
             onTapped: ()=>{
                           _player.playbackState === MediaPlayer.PlayingState? _player.pause(): _player.play();
@@ -96,17 +95,20 @@ Rectangle{
         }
     }
 
-    VideoEdit{
-        id:_videoEdit
-    }
-
-//对添加字幕文件后的视频文件进行自动播放
+    VideoEdit{id:_videoEdit}
+    //对添加字幕文件后的视频文件进行自动播放
     Connections{
         target: _videoEdit//监听_videoEdit的信号
-        function onSynfinished(audioSource){
-            maincontent.audioSource = dialogs.out_filepath
-            console.log("现在的播放路径： "+ dialogs.out_filepath)
+        function onFinished(out_filmpath){
+            // maincontent.audioSource = dialogs.out_filepath
+            // console.log("现在的播放路径： "+ dialogs.out_filepath)
+            maincontent.audioSource = out_filmpath
+            console.log("现在的播放路径： "+ out_filmpath)
             maincontent.player.play()
+
+            messagebox.messageDialog3.open()
         }
     }
-}
+    }
+
+
