@@ -32,7 +32,6 @@ qt_add_qml_module(
   MySquareButton.qml
   MyRadioButton.qml
   MainContent.qml
-
   Dialogs.qml
   Cutter.js
   Content.qml
@@ -42,7 +41,8 @@ qt_add_qml_module(
   RESOURCES
   images.qrc
   SOURCES
-  QML_FILES MessageBox.qml)
+  QML_FILES
+  MessageBox.qml)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1. If
 # you are developing for iOS or macOS you should consider setting an explicit,

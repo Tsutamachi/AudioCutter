@@ -179,3 +179,15 @@ function addsubtitle(){
     //     maincontent.player.play()
     // }
 }
+
+function onFinished(out_filmpath){
+    // maincontent.audioSource = dialogs.out_filepath
+    // console.log("现在的播放路径： "+ dialogs.out_filepath)
+
+    console.log("onFinished called with out_filmpath: " + out_filmpath);
+    maincontent.audioSource = out_filmpath
+    console.log("现在的播放路径： "+ out_filmpath)
+    maincontent.player.play()
+
+    messagebox.messageDialog3.open()
+}

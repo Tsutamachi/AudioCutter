@@ -40,7 +40,8 @@ public slots:
 signals:
     void videoMergeCompleted(QString mergeFilePath); //
     void videoPathsChanged();
-    void finished(QString out_filmpath);
+    // void finished(QString out_filmpath);
+    void finished();
     void synfinished(QString out_filmpath);
 
 private:

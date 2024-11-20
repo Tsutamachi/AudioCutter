@@ -1,4 +1,3 @@
-// MainContent.qml
 // 所有有关剪辑视频的主题功能在这里面，主体部分
 import QtQuick
 import QtMultimedia
@@ -97,18 +96,28 @@ Rectangle{
 
     VideoEdit{id:_videoEdit}
     //对添加字幕文件后的视频文件进行自动播放
+    // Connections{
+    //     target: _videoEdit//监听_videoEdit的信号
+    //     onFinished:{
+    //         Controller.onFinished(out_filmpath)
+    //     }
+    // }
     Connections{
-        target: _videoEdit//监听_videoEdit的信号
-        function onFinished(out_filmpath){
-            // maincontent.audioSource = dialogs.out_filepath
-            // console.log("现在的播放路径： "+ dialogs.out_filepath)
-            maincontent.audioSource = out_filmpath
-            console.log("现在的播放路径： "+ out_filmpath)
-            maincontent.player.play()
+        target:_videoEdit
+        // onFinished:function(out_filmpath){
+        //     console.log("onFinished called with out_filmpath: " + out_filmpath)
+        //     maincontent.audioSource = out_filmpath
+        //     console.log("现在的播放路径： "+ out_filmpath)
+        //     maincontent.player.play()
 
+        //     messagebox.messageDialog3.open()
+        // }
+        onFinished:function(){
             messagebox.messageDialog3.open()
         }
     }
-    }
+
+}
+
 
 

@@ -243,7 +243,8 @@ void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_fi
     } else {
         qDebug() << "Video conversion completed.";
         qDebug() << "Sending finished signal with out_filmpath: " << out_filmpath;
-        emit finished(out_filmpath);
+        // emit finished(out_filmpath);
+        emit finished();
     }
 }
 

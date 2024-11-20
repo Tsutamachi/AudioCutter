@@ -1,5 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QSemaphore>
+#include <QSharedMemory>
 
 int main(int argc, char *argv[])
 {
