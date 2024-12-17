@@ -37,14 +37,16 @@ public slots:
         const QString &in_subtitle,
         const QString &out_filmpath); //为添加字幕的操作设置一个独立的进程，防止软件系统假死
     void remove();
+    void threadFinished(const QString &out_filmpath);
 signals:
     void videoMergeCompleted(QString mergeFilePath); //
     void videoPathsChanged();
     // void finished(QString out_filmpath);
-    void finished();
     void synfinished(QString out_filmpath);
+    void synfinishedQueued(QString out_filmpath);
 
 private:
     QStringList storevideo;
     int index = 0;
+    QThread *thread;
 };

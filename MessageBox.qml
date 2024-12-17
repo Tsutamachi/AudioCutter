@@ -10,30 +10,54 @@ Item {
     property alias messageDialog4:_messageDialog4
 
     MessageDialog {
-            id: _messageDialog1
-            title: "Hint Message"
-            text: "Please specify the movie file before you extract the subtitle file!\n"
-            buttons: MessageDialog.Ok /*| MessageDialog.Open*/
-            // onOpenClicked:{Controller.setfilepath()}
+        id: _messageDialog1
+        title: "Hint Message"
+        text: "Please specify the movie file before you extract the subtitle file!\n"
+        buttons: MessageDialog.Ok /*| MessageDialog.Open*/
+        // onOpenClicked:{Controller.setfilepath()}
+
+        onVisibleChanged: {
+            if (visible) {
+                console.log("MessageDialog1 has been opened.");
+            }
         }
+    }
 
     MessageDialog {
-            id: _messageDialog2
-            title: "Hint Message"
-            text: "Please specify the movie file before you merge the subtitle file!\n"
-            buttons: MessageDialog.Ok/* | MessageDialog.Open*/
+        id: _messageDialog2
+        title: "Hint Message"
+        text: "Please specify the movie file before you merge the subtitle file!\n"
+        buttons: MessageDialog.Ok/* | MessageDialog.Open*/
+
+        onVisibleChanged: {
+            if (visible) {
+                console.log("MessageDialog2 has been opened.");
+            }
         }
+    }
 
     MessageDialog{
         id:_messageDialog3
         title: "Hint Message"
         text:"have Finished to extract the subtitle file!"
         buttons: MessageDialog.Ok
+
+        onVisibleChanged: {
+            if (visible) {
+                console.log("MessageDialog3 has been opened.");
+            }
+        }
     }
     MessageDialog{
         id:_messageDialog4
         title: "Hint Message"
         text:"have Finished to merge the subtitle file!"
         buttons: MessageDialog.Ok
+
+        onVisibleChanged: {
+            if (visible) {
+                console.log("MessageDialog4 has been opened.");
+            }
+        }
     }
 }

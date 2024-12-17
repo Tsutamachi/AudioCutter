@@ -4,9 +4,9 @@
 #include <QIODevice>
 #include <QProcess>
 #include <QTextStream>
+#include <QThread>
 #include <QtCore>
 #include <QtWidgets/QMessageBox>
-#include <QProcess>
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -17,7 +17,36 @@ extern "C" {
 
 VideoEdit::VideoEdit(QObject *parent)
     : QObject{parent}
-{}
+{
+    // connect(this, &VideoEdit::synfinished, this, onSynfinished, Qt.QueuedConnection);
+
+    // connect(thread, &QThread::started, this, &VideoEdit::addSubtitle, Qt::QueuedConnection);
+
+    // QObject::connect(
+    //     this,
+    //     &VideoEdit::synfinished,
+    //     this,
+    //     [this](QString out_filmpath) {
+    //         // 这里的代码将在事件循环的下一个迭代中执行
+    //         emit synfinishedQueued(out_filmpath);
+    //     },
+    //     Qt::QueuedConnection);
+
+    // connect(this, &VideoEdit::synfinished, qmlContext->engine(), [qmlContext](QString out_filmpath) {
+    //     // 在这里调用 QML 中的槽函数
+    //     QMetaObject::invokeMethod(qmlContext->rootObject(),
+    //                               "onSynfinished",
+    //                               Qt::QueuedConnection,
+    //                               Q_ARG(QVariant, out_filmpath));
+
+    //     Qt.callLater(videoEdit, "onSynfinished", Qt.QueuedConnection);
+    //     console.log("onFinished called with out_filmpath: " + out_filmpath);
+    //     maincontent.audioSource = out_filmpath;
+    //     console.log("现在的播放路径： " + out_filmpath);
+    //     maincontent.player.play();
+    //     messagebox.messageDialog3.open();
+    // });
+}
 
 std::string doubleToString(double num)
 {
@@ -242,37 +271,82 @@ void VideoEdit::addSubtitle(QString in_film, QString in_subtitle, QString out_fi
         qDebug() << "Standard error output:" << process.readAllStandardError();
     } else {
         qDebug() << "Video conversion completed.";
+        // connect(this, &VideoEdit::synfinished, this, onSynfinished, Qt.QueuedConnection);
+        // emit finished();
+        emit synfinished(out_filmpath);
         qDebug() << "Sending finished signal with out_filmpath: " << out_filmpath;
-        // emit finished(out_filmpath);
-        emit finished();
+        QThread::sleep(1);
+        thread->quit();
     }
 }
+
+// void VideoEdit::addSubtitleAsync(const QString &in_film,
+//                                  const QString &in_subtitle,
+//                                  const QString &out_filmpath)
+// {
+//     // 创建一个新的QThread对象
+//     thread = new QThread();
+
+//     // 创建一个新的VideoEdit对象
+//     VideoEdit *worker = new VideoEdit();
+
+//     // 将worker对象移动到新线程
+//     worker->moveToThread(thread);
+
+//     // 连接信号和槽
+//     connect(
+//         thread,
+//         &QThread::started,
+//         worker,
+//         [worker, in_film, in_subtitle, out_filmpath]() {
+//             worker->addSubtitle(in_film, in_subtitle, out_filmpath);
+//         },
+//         Qt::QueuedConnection);
+
+//     // connect(thread, &QThread::finished, this, &VideoEdit::threadFinished, Qt::QueuedConnection);
+//     // connect(
+//     //     thread,
+//     //     &QThread::finished,
+//     //     this,
+//     //     [this, out_filmpath]() { this->threadFinished(out_filmpath); },
+//     //     Qt::QueuedConnection);
+//     //用于删除子进程
+//     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
+//     QMetaObject::invokeMethod(worker, &VideoEdit::deleteLater, Qt::QueuedConnection);
+
+//     // //给QML端传送信号
+//     // connect(thread, &QThread::finished, [=]() { emit synfinished(out_filmpath); });
+
+//     // 开始线程
+//     thread->start();
+// }
 
 void VideoEdit::addSubtitleAsync(const QString &in_film,
                                  const QString &in_subtitle,
                                  const QString &out_filmpath)
 {
     // 创建一个新的QThread对象
-    QThread *thread = new QThread();
-
-    // 创建一个新的VideoEdit对象
-    VideoEdit *worker = new VideoEdit();
-
-    // 将worker对象移动到新线程
-    worker->moveToThread(thread);
+    thread = new QThread();
 
     // 连接信号和槽
-    connect(thread, &QThread::started, worker, [worker, in_film, in_subtitle, out_filmpath]() {
-        worker->addSubtitle(in_film, in_subtitle, out_filmpath);
-    });
+    connect(
+        thread,
+        &QThread::started,
+        this,
+        [this, in_film, in_subtitle, out_filmpath]() {
+            addSubtitle(in_film, in_subtitle, out_filmpath);
+        },
+        Qt::QueuedConnection);
 
+    // connect(thread, &QThread::finished, this, &VideoEdit::threadFinished, Qt::QueuedConnection);
+    // connect(
+    //     thread,
+    //     &QThread::finished,
+    //     this,
+    //     [this, out_filmpath]() { this->threadFinished(out_filmpath); },
+    //     Qt::QueuedConnection);
     //用于删除子进程
     connect(thread, &QThread::finished, thread, &QThread::deleteLater);
-    QMetaObject::invokeMethod(worker, &VideoEdit::deleteLater, Qt::QueuedConnection);
-
-
-    //给QML端传送信号
-    connect(thread, &QThread::finished, [=]() { emit synfinished(out_filmpath); });
 
     // 开始线程
     thread->start();
@@ -284,4 +358,9 @@ void VideoEdit::deleteDirectory()
     if (dir.exists()) {
         dir.removeRecursively();
     }
+}
+void VideoEdit::threadFinished(const QString &out_filmpath)
+{
+    qDebug() << "threadFinished With: " << out_filmpath;
+    emit synfinished(out_filmpath);
 }

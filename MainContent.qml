@@ -18,8 +18,6 @@ Rectangle{
 
     Dialogs{
         id: _dialogs
-        // property var mediaStartTime
-
         property string in_filepath: _startcut.path//audioSource.toString()
         property string out_filepath
         openfile.onAccepted: {Controller.setfilepath()}
@@ -94,29 +92,27 @@ Rectangle{
         }
     }
 
-    VideoEdit{id:_videoEdit}
-    //对添加字幕文件后的视频文件进行自动播放
-    // Connections{
-    //     target: _videoEdit//监听_videoEdit的信号
-    //     onFinished:{
-    //         Controller.onFinished(out_filmpath)
-    //     }
+    // SharedMemoryHandler {
+    //     id: sharedMemoryHandler
+    //     // 创建共享内存
+    //     Component.onCompleted: sharedMemoryHandler.createSharedMemory("SharedMemory")
     // }
+
+    VideoEdit{id:_videoEdit}
+
     Connections{
         target:_videoEdit
-        // onFinished:function(out_filmpath){
-        //     console.log("onFinished called with out_filmpath: " + out_filmpath)
-        //     maincontent.audioSource = out_filmpath
-        //     console.log("现在的播放路径： "+ out_filmpath)
-        //     maincontent.player.play()
 
-        //     messagebox.messageDialog3.open()
-        // }
-        onFinished:function(){
+        onSynfinished:function(out_filmpath){
+            console.log("onSynfinished Triggered!!!!")
             messagebox.messageDialog3.open()
+            // Qt.callLater(videoEdit, "onSynfinished", Qt.QueuedConnection)
+            console.log("onFinished called with out_filmpath: " + out_filmpath)
+            maincontent.audioSource = out_filmpath
+            console.log("现在的播放路径： "+ out_filmpath)
+            maincontent.player.play()
         }
     }
-
 }
 
 
